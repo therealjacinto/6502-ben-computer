@@ -15,7 +15,7 @@ init1:
  lda  #>__SE
  sta  sp+1
 
-; set system sp?
+; set system sp
  ldx  #0xff
  txs
 
@@ -131,9 +131,3 @@ sp: reserve 2
  global r30
  global r31
  global sp
-
-
-
-
-
-
