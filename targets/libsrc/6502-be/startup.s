@@ -19,26 +19,6 @@ init1:
  ldx  #0xff
  txs
 
-; erase bss
- lda #<__BB
- sta r0
- lda #>__BB
- sta r1
- lda #0
- tay
-l2:
- sta (r0),y
- inc r0
- bne l3
- inc r1
-l3:
- ldx r0
- cpx #<__BE
- bne l2
- ldx r1
- cpx #>__BE
- bne l2
-
 ; argc,argv
  lda #0
  sta r0
