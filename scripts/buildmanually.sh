@@ -18,7 +18,7 @@ fi
 while [ $# -gt 0 ]; do
     case $1 in
         "--startup")
-            startupc=true
+            startup=true
             ;;
         "--assembler")
             assembler=true
@@ -33,7 +33,7 @@ while [ $# -gt 0 ]; do
             saveoutput=true
             ;;
         "--all")
-            startupc=true
+            startup=true
             assembler=true
             objects=true
             ;;
@@ -42,7 +42,7 @@ while [ $# -gt 0 ]; do
 done
 
 
-if [[ ${startupc} ]]; then
+if [[ ${startup} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
     ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=23999
     ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=16384 
