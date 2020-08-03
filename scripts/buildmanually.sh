@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTSPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 REPOPATH="${SCRIPTSPATH}/.."
-assembly_startup_code="${REPOPATH}/targets/libsrc/6502-be/startup.s"
+assembly_startup_code="${REPOPATH}/targets/libsrc/6502-ben/startup.s"
 
 if [[ "$#" -lt 1 ]]; then
     printf "ERROR: this script requires flags to determine what to build:\n"
@@ -44,8 +44,8 @@ done
 
 if [[ ${startupc} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-be/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=23999
-    ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-be/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=16384 
+    ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=23999
+    ${REPOPATH}/bin/vbcc6502 ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=16384 
     printf "INFO: Compiling startup object files...\n"
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup-reg.s -o ${REPOPATH}/lib/startup-reg.o -Fvobj -quiet -nowarn=62
@@ -66,7 +66,7 @@ fi
 
 if [[ ${linking} ]]; then
     printf "INFO: Linking object files into raw binary...\n"
-    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-be/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/hello.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/hello
+    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/hello.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/hello
 fi
 
 if [[ ! ${saveoutput} ]]; then

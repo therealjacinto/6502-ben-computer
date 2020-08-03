@@ -7,4 +7,4 @@ mkdir -p ${REPOPATH}/build
 
 export VBCC=${REPOPATH}
 ${SCRIPTSPATH}/buildmanually.sh --startup
-${REPOPATH}/bin/vc +be ${REPOPATH}/src/hello.c ${REPOPATH}/lib/lcdio/lcdio.c -o ${REPOPATH}/build/hello
+${REPOPATH}/bin/vc +ben ${REPOPATH}/src/hello.c ${REPOPATH}/lib/lcdio/lcdio.c -o ${REPOPATH}/build/hello

@@ -6,5 +6,5 @@
 -rmv=rm %s
 -cpr=$VBCC/bin/vcpr6502 -quiet %s %s
 -cprv=$VBCC/bin/vcpr6502 %s %s
--ld=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-be/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
--ldv=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-be/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
+-ld=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
+-ldv=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
