@@ -6,6 +6,5 @@ REPOPATH="${SCRIPTSPATH}/.."
 mkdir -p ${REPOPATH}/build
 
 export VBCC=${REPOPATH}
-#${SCRIPTSPATH}/buildstartup.sh
-${SCRIPTSPATH}/buildstartupfromc.sh
+${SCRIPTSPATH}/buildmanually.sh --startup
 ${REPOPATH}/bin/vc +be ${REPOPATH}/src/hello.c ${REPOPATH}/lib/lcdio/lcdio.c -o ${REPOPATH}/build/hello

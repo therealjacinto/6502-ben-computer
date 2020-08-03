@@ -1,3 +1,5 @@
+; For reference only! Taken from http://www.compilers.de/vbcc.html. This code
+; is not compiled when running buildall.sh
  global _main
  global ___exit
  global _start
