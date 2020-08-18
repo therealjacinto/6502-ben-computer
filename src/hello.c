@@ -11,6 +11,5 @@ void print_to_lcd(char *message) {
 
 int main(int argc, char **argv)
 {
-    lcd_reset();
     print_to_lcd("Hello world!");
 }

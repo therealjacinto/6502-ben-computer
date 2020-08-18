@@ -1,3 +1,4 @@
+#include "lcdio/lcdio.h"
 #define NULL ((void *)0)
 
 extern int main(int argc, char **argv);
@@ -11,6 +12,7 @@ void init1()
 {
     set_user_sp();
     set_system_sp();
+    lcd_reset();
     goto_start();
 }
 
