@@ -54,19 +54,19 @@ fi
 if [[ ${assembler} ]]; then
     printf "INFO: Generating assembler output...\n"
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=1
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/hello.c -o=${REPOPATH}/build/hello.s -c99 -quiet -avoid-bank-switch -O=1
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=1
 fi
 
 
 if [[ ${objects} ]]; then
     printf "INFO: Compiling object files...\n"
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/lcdio.s -o ${REPOPATH}/build/lcdio.o -Fvobj -quiet -nowarn=62
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/hello.s -o ${REPOPATH}/build/hello.o -Fvobj -quiet -nowarn=62
+    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/helloworld.s -o ${REPOPATH}/build/helloworld.o -Fvobj -quiet -nowarn=62
 fi
 
 if [[ ${linking} ]]; then
     printf "INFO: Linking object files into raw binary...\n"
-    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/hello.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/hello
+    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld
 fi
 
 if [[ ! ${saveoutput} ]]; then
