@@ -8,25 +8,27 @@ char message[6]; // 6 bytes in 0x0200X section
 // null-terminated string `message`
 void push_char(char character, char *message)
 {
+    // Push new first char onto temp
     char temp = character;
     char *y = message;
     char x;
     
     while (temp != 0)
     {
+        // Get char on string and put into x
         x = *y;
+        // Pull char off temp and add it to the string
         *y = temp;
-        //print_char(temp);
         y++;
         temp = x;
     }
+    // Pull the null off temp and add to the end of the string
     *y = temp;
 }
 
-void divide()
+void divide(unsigned int value)
 {
     // Initialize value to be the number to convert
-    unsigned int value = 1729;
     unsigned char overflow_val = 0;
     unsigned char overflow_mod = 0;
 
@@ -36,25 +38,32 @@ void divide()
         // Initialize remainder to be zero
         unsigned int mod10 = 0;
 
+        // Number of bits in value
         char i = 16;
 
         while (i > 0)
         {
-            // Rotate quotient and remainder
+            // Check if value will overflow
             if (value >= 32768)
             {
-                // Top bit is a 1
                 overflow_val = 1;
             }
+
+            // Rotate quotient and remainder
             value = value << 1;
             value = value | overflow_mod;
             mod10 = mod10 << 1;
             mod10 = mod10 | overflow_val;
+
+            // Reset overflows
             overflow_val = 0;
             overflow_mod = 0;
             
+            // sec; sub 10; bcc;
+            // ignore if dividend < divisor
             if (mod10 >= 10)
             {
+                // dividend - divisor
                 mod10 = mod10 - 10;
                 overflow_mod = 1;
             }
@@ -65,17 +74,16 @@ void divide()
         value = value | overflow_mod;
         overflow_mod = 0;
 
-        unsigned char lowermod10 = (unsigned char)mod10;
-        lowermod10 = lowermod10 + '0';
-        push_char(lowermod10, message);
+        push_char((unsigned char)mod10 + '0', message);
     }
 }
 
 int main(int argc, char **argv)
 {
+    // Initialize message so we know where the end is
     *message = 0;
 
-    divide();
+    divide(1729);
     
     print_to_lcd(message);
 }
