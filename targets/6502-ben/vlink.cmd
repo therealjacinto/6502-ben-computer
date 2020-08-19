@@ -11,9 +11,10 @@ MEMORY
 
 SECTIONS
 {
-    zpage  (NOLOAD) : {*(zpage)} >zero
-    init            : {*(init)} >rom
-    text            : {*(text)} >rom
+    zpage  (NOLOAD) : {*(zpage)}  >zero
+    data   (NOLOAD) : {*(data)}   >ram
+    init            : {*(init)}   >rom
+    text            : {*(text)}   >rom
     rodata          : {*(rodata)} >rom
     
     . = 0xfffc;

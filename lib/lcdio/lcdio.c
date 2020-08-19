@@ -45,3 +45,12 @@ void lcd_reset()
     lcd_instruction(6); /* Increment and shift cursor; don't shift display */
     lcd_instruction(1); /* Clear display */
 }
+
+void print_to_lcd(char *message) {
+    int i = 0;
+    while (message[i] != 0)
+    {
+        print_char(message[i]);
+        i++;
+    }
+}

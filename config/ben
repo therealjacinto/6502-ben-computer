@@ -1,5 +1,5 @@
--cc=$VBCC/bin/vbcc6502 -quiet -avoid-bank-switch -I$VBCC/lib %s -o= %s %s -O=%ld
--ccv=$VBCC/bin/vbcc6502 -avoid-bank-switch -I$VBCC/lib %s -o= %s %s -O=%ld
+-cc=$VBCC/bin/vbcc6502 -quiet -avoid-bank-switch -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
+-ccv=$VBCC/bin/vbcc6502 -avoid-bank-switch -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
 -as=$VBCC/bin/vasm6502_oldstyle -quiet -nowarn=62 -opt-branch -Fvobj %s -o %s
 -asv=$VBCC/bin/vasm6502_oldstyle -nowarn=62 -opt-branch -Fvobj %s -o %s
 -rm=rm %s
