@@ -36,6 +36,7 @@ while [ $# -gt 0 ]; do
             startup=true
             assembler=true
             objects=true
+            linking=true
             ;;
     esac
     shift
@@ -45,7 +46,7 @@ done
 if [[ ${startup} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=23999
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=16384 
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=16384
     printf "INFO: Compiling startup object files...\n"
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup-reg.s -o ${REPOPATH}/lib/startup-reg.o -Fvobj -quiet -nowarn=62
@@ -58,12 +59,11 @@ if [[ ${assembler} ]]; then
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=1
 fi
 
-
 if [[ ${objects} ]]; then
     printf "INFO: Compiling object files...\n"
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/lcdio.s -o ${REPOPATH}/build/lcdio.o -Fvobj -quiet -nowarn=62
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/helloworld.s -o ${REPOPATH}/build/helloworld.o -Fvobj -quiet -nowarn=62
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/bin2dec.s -o ${REPOPATH}/build/bin2dec.o -Fvobj -quiet -nowarn=62
+    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/lcdio.s -o ${REPOPATH}/build/lcdio.o -Fvobj -quiet -nowarn=62 -opt-branch
+    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/helloworld.s -o ${REPOPATH}/build/helloworld.o -Fvobj -quiet -nowarn=62 -opt-branch
+    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/bin2dec.s -o ${REPOPATH}/build/bin2dec.o -Fvobj -quiet -nowarn=62 -opt-branch
 fi
 
 if [[ ${linking} ]]; then
