@@ -28,7 +28,6 @@ void exit()
 void start()
 {
     main(0, NULL);
-    // Call exit
     exit();
 }
 
@@ -38,7 +37,6 @@ void init1()
     set_user_sp_address(&_SE);
     set_hardware_sp_address(0xff);
     lcd_reset();
-    // Call start() without returning
     start();
 }
 
