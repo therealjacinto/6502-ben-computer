@@ -1,7 +1,7 @@
 #include "lcdio/lcdio.h"
 
 #pragma section data
-char message[6]; // 6 bytes in 0x0200X section
+char message[6];
 #pragma section default
 
 // Add the character in the A register to the beginning of the 
@@ -85,5 +85,5 @@ int main(int argc, char **argv)
 
     divide(1729);
     
-    print_to_lcd(message);
+    print_message_to_lcd(message);
 }

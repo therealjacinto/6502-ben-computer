@@ -2,7 +2,7 @@
 
 #define NULL ((void *)0)
 
-// Stack End (__SE)is defined in linker
+// Stack End (__SE) is defined in linker
 extern int* _SE;
 
 // Used by compiler
