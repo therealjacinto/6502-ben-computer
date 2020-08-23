@@ -1,16 +1,14 @@
 #include "lcdio/lcdio.h"
 
-#pragma section data
 char message[6];
-#pragma section default
 
 // Add the character in the A register to the beginning of the 
 // null-terminated string `message`
-void push_char(char character, char *message)
+void push_char(char character, char *mess)
 {
     // Push new first char onto temp
     char temp = character;
-    char *y = message;
+    char *y = mess;
     char x;
     
     while (temp != 0)

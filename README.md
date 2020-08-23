@@ -22,7 +22,7 @@ In order to use the debugger, first verify you have the conda environment instal
 
 Once the environment is installed, then you can build the binary with debugging tools:
 
-`./scripts/buildmanually.sh --all --debug`
+`./scripts/buildmanually.sh --all --debug --save-output-files`
 
 This will output a raw segment file that will allow us to add some labels to `py65mon`. Now that everything is build properly, you can launch the debugger:
 

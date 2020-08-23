@@ -156,6 +156,8 @@ expect -c "
 
     send \"fill 0000:7fff 0\n\"
     expect -re \$prompt
+    send \"show_labels\n\"
+    expect -re \$prompt
 
     interact
 "

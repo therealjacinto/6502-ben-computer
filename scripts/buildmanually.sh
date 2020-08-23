@@ -10,6 +10,7 @@ if [[ "$#" -lt 1 ]]; then
     printf "\t--objects\t\tCompile object files for assembler code\n"
     printf "\t--linking\t\tLink object files into raw binary\n"
     printf "\t--save-output-files\tDo not delete intermediate files\n"
+    printf "\t--debug\tAlso output segment location files\n"
     printf "\t--all\t\t\tSame as --startup, --assembler, --objects, and"
     printf " --linking. This is essentially running the buildall script.\n"
     exit 0
@@ -51,7 +52,7 @@ fi
 
 if [[ ${startup} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=283
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=283 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=1
     printf "INFO: Compiling startup object files...\n"
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
@@ -79,6 +80,7 @@ if [[ ${linking} ]]; then
     if [[ ${debug} ]]; then
         printf "INFO: Building debug files...\n"
         ${REPOPATH}/bin/vlink -b rawseg -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld-debug
+        ${REPOPATH}/bin/vlink -b rawseg -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/bin2dec-debug
     fi
 fi
 
@@ -86,4 +88,5 @@ if [[ ! ${saveoutput} ]]; then
     printf "INFO: Deleting intermediate files...\n"
     rm -f ${REPOPATH}/build/*.o ${REPOPATH}/build/*.s ${REPOPATH}/build/*-debug.*
 fi
+
 printf "INFO: Build Complete\n"

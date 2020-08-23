@@ -4,6 +4,11 @@
 
 // Stack End (__SE) is defined in linker
 extern int* _SE;
+extern int _BB;
+extern int _BE;
+extern unsigned char* _DS;
+extern int _DE;
+extern volatile unsigned char* _DC;
 
 // Used by compiler
 void set_user_sp_address(__reg("a/x") int** se) =
@@ -15,14 +20,41 @@ void set_hardware_sp_address(__reg("a") char val) =
   "\ttax\n"
   "\ttxs";
 
+// Initialize ram
+// void init_ram(__reg("a") char val) = 
+//   "\tsta $2000\n"
+//   "\tlda #0\n"
+//   "\tsta $2001";
+// {
+//     //char *src = (char *)_DC;
+//     *_DS = 'H';
+//     *(_DS + 1) = 0;
+
+//     /* ROM has data; copy it to RAM */
+//     //while (dst < (char *)_DE) {
+//     //    *dst++ = *src++;
+//     //}
+
+//     /* Zero bss */
+//     //for (dst = &_BB; dst< &_BE; dst++)
+//     //    *dst = 0;
+// }
+
 extern int main(int argc, char **argv);
+
+#pragma section exit
 
 // Is called once main completes
 void exit()
 {
+#if DEBUG
+    __asm("\tBRK");
+#endif
     // jmp to exit indefinitely
     exit();
 }
+
+#pragma section handler
 
 // After init is called, this handles the call to main and then exit.
 void start()
@@ -31,7 +63,7 @@ void start()
     exit();
 }
 
-#pragma section init
+#pragma section entry
 void init1()
 {
     set_user_sp_address(&_SE);
@@ -39,5 +71,3 @@ void init1()
     lcd_reset();
     start();
 }
-
-#pragma section default

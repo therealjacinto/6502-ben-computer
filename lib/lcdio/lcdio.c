@@ -1,24 +1,21 @@
 #include "iochip/iochip.h"
-#include "lcdio.h"
-extern char message[];
 
 void lcdbusy()
 {
     char temp = 1;
     do
     {
-        set_PORTA(RW);
-        set_PORTA(RW | E);
+        set_PORTA(RW); // NO
+        set_PORTA(RW | E); // NO
         temp = get_PORTB() & 128;
     } while (temp != 0);
-
-    set_PORTA(RW);
-    set_DDRB(255); /* Port B is output */
+    set_PORTA(RW); // NO
+    set_DDRB(255); /* Port B is output */ // NO
 }
 
 void lcd_wait()
 {
-    set_DDRB(0); /* Port B is input */
+    set_DDRB(0); /* Port B is input */ // NO
     lcdbusy();
 }
 
@@ -49,7 +46,7 @@ void lcd_reset()
     lcd_instruction(1); /* Clear display */
 }
 
-void print_message_to_lcd() {
+void print_message_to_lcd(char *message) {
     int i = 0;
     while (message[i] != 0)
     {
