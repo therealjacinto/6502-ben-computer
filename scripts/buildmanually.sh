@@ -38,10 +38,16 @@ while [ $# -gt 0 ]; do
             objects=true
             linking=true
             ;;
+        "--debug")
+            debug=true
+            ;;
     esac
     shift
 done
 
+if [[ ${debug} ]]; then
+    DEBUG_FLAG="-DDEBUG"
+fi
 
 if [[ ${startup} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
@@ -54,7 +60,7 @@ fi
 
 if [[ ${assembler} ]]; then
     printf "INFO: Generating assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=447
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=447 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=1
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=1
 fi
@@ -70,10 +76,14 @@ if [[ ${linking} ]]; then
     printf "INFO: Linking object files into raw binary...\n"
     ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld
     ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/bin2dec
+    if [[ ${debug} ]]; then
+        printf "INFO: Building debug files...\n"
+        ${REPOPATH}/bin/vlink -b rawseg -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld-debug
+    fi
 fi
 
 if [[ ! ${saveoutput} ]]; then
     printf "INFO: Deleting intermediate files...\n"
-    rm -f ${REPOPATH}/build/*.o ${REPOPATH}/build/*.s
+    rm -f ${REPOPATH}/build/*.o ${REPOPATH}/build/*.s ${REPOPATH}/build/*-debug.*
 fi
 printf "INFO: Build Complete\n"
