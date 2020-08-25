@@ -4,15 +4,15 @@ REPOPATH="${SCRIPTSPATH}/.."
 assembly_startup_code="${REPOPATH}/targets/libsrc/6502-ben/startup.s"
 
 if [[ "$#" -lt 1 ]]; then
-    printf "ERROR: this script requires flags to determine what to build:\n"
+    printf "ERROR: This script requires flags to determine what to build:\n"
     printf "\t--startup\t\tGenerate assembler output for startup code\n"
     printf "\t--assembler\t\tGenerate assember output for src/ code\n"
     printf "\t--objects\t\tCompile object files for assembler code\n"
     printf "\t--linking\t\tLink object files into raw binary\n"
     printf "\t--save-output-files\tDo not delete intermediate files\n"
-    printf "\t--debug\tAlso output segment location files\n"
-    printf "\t--all\t\t\tSame as --startup, --assembler, --objects, and"
-    printf " --linking. This is essentially running the buildall script.\n"
+    printf "\t--debug\t\t\tAlso output segment location files\n"
+    printf "\t--all\t\t\tSame as --startup, --assembler, --objects, and "
+    printf -- "--linking. This is essentially running the buildall script.\n"
     exit 0
 fi
 

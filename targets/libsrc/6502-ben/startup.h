@@ -32,5 +32,9 @@ char r29;
 char r30;
 char r31;
 short sp;
+long btmp0;
+long btmp1;
+long btmp2;
+long btmp3;
 
 #pragma section default
