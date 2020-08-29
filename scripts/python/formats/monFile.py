@@ -11,7 +11,7 @@ def formatAddr(line):
 def formatOpArg(opTuple):
     if opTuple[1].startswith("#$"):
         return opTuple[1][2:]
-    elif re.match("^\$[0-9]", opTuple[1]):
+    elif re.match(r"^\$[0-9]", opTuple[1]):
         return opTuple[1][1:]
     return opTuple[1].lower()
 
