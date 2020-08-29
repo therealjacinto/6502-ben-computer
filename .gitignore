@@ -56,4 +56,8 @@ bin/
 build/
 
 # vscode
-.vscode/settings.json
+.vscode/
+
+# python
+__pycache__/
+*.py[cod]
