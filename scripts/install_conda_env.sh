@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CONDA_PATH="/opt/conda"
+CONDA_PATH="${HOME}/miniconda3"
 
 # Get path of script
 SCRIPTS_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"

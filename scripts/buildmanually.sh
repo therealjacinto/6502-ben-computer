@@ -10,7 +10,7 @@ if [[ "$#" -lt 1 ]]; then
     printf "\t--objects\t\tCompile object files for assembler code\n"
     printf "\t--linking\t\tLink object files into raw binary\n"
     printf "\t--save-output-files\tDo not delete intermediate files\n"
-    printf "\t--debug\t\t\tAlso output segment location files\n"
+    printf "\t--debug\t\t\tPushes debug compiler flag to build\n"
     printf "\t--all\t\t\tSame as --startup, --assembler, --objects, and "
     printf -- "--linking. This is essentially running the buildall script.\n"
     exit 0
@@ -77,16 +77,11 @@ if [[ ${linking} ]]; then
     printf "INFO: Linking object files into raw binary...\n"
     ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld
     ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/bin2dec
-    if [[ ${debug} ]]; then
-        printf "INFO: Building debug files...\n"
-        ${REPOPATH}/bin/vlink -b rawseg -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld-debug
-        ${REPOPATH}/bin/vlink -b rawseg -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o -set-deluscore ${REPOPATH}/lib/startup-reg.o -clr-deluscore ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/bin2dec-debug
-    fi
 fi
 
 if [[ ! ${saveoutput} ]]; then
     printf "INFO: Deleting intermediate files...\n"
-    rm -f ${REPOPATH}/build/*.o ${REPOPATH}/build/*.s ${REPOPATH}/build/*-debug.*
+    rm -f ${REPOPATH}/build/*.o ${REPOPATH}/build/*.s
 fi
 
 printf "INFO: Build Complete\n"

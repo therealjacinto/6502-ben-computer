@@ -9,32 +9,19 @@ MEMORY
     rom : org = 0x8000, len = 0x8000
 }
 
-PHDRS
-{
-    exit PT_LOAD;
-    handler PT_LOAD;
-    entry PT_LOAD;
-    text PT_LOAD;
-    lcdio PT_LOAD;
-    data PT_LOAD;
-}
-
 SECTIONS
 {
     zpage   (NOLOAD) : {*(zpage)}   >zero
     bss     (NOLOAD) : {*(bss)}     >ram
-    exit             : {*(exit)}    >rom         :exit
-    handler          : {*(handler)} >rom         :handler
-    entry            : {*(entry)}   >rom         :entry
-    text             : {*(text)}    >rom         :text
-    lcdio            : {*(lcdio)}   >rom         :lcdio
-    data    (NOLOAD) : {*(data)}    >ram  AT>rom :data
-    rodata           : {*(rodata)}  >rom         :data
+    text             : {*(text)}    >rom
+    init             : {*(init)}    >rom
+    data    (NOLOAD) : {*(data)}    >ram  AT>rom
+    rodata           : {*(rodata)}  >rom
     
     
     . = 0xfffc;
     other : {
-        SHORT(ADDR(entry));
+        SHORT(ADDR(init));
         SHORT(0x0000);
     }
     

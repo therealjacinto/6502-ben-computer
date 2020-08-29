@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-CONDA_PATH="/opt/conda"
+SCRIPTSPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+REPOPATH="${SCRIPTSPATH}/.."
+CONDA_PATH="${HOME}/miniconda3"
 ENTRY_POINT=7ffc
 JMP_CODE=4c
 SCRIPT=${0}
@@ -14,14 +16,16 @@ elif [ ! -f ${1} ]; then
     exit 1
 fi
 FILE_PATH=${1}
+DISASSEMBLE_FILE="${REPOPATH}/build/disassemble.out"
+rm -f ${DISASSEMBLE_FILE}
 
 while [ $# -gt 0 ]; do
     case $1 in
         "--verbose")
             verbose=true
             ;;
-        "--ignore-segments")
-            ignore_segments=true
+        "--find-labels")
+            find_labels=true
             ;;
     esac
     shift
@@ -63,7 +67,7 @@ function convert_hex_to_dec ()
 
 function convert_dec_to_hex ()
 {
-    echo 
+    printf "%x\n" ${1} 
 }
 
 # Find path of the emulator
@@ -81,6 +85,72 @@ conda activate 6502
 PY65MON_PATH=$(dirname $(which python))/py65mon
 if [[ ${verbose} ]]; then
     printf "INFO: py65mon path found! (${PY65MON_PATH})\n"
+fi
+
+# Disassemble ROM and save to DISASSEMBLE_FILE
+if [[ ${find_labels} ]]; then
+    if [[ ${verbose} ]]; then
+        printf "INFO: Attempting to find labels\n"
+    fi
+    label_locations="build/locations.csv"
+    rm -f ${DISASSEMBLE_FILE}
+    rm -f ${label_locations}
+    expect -c "
+        log_user 0
+        set timeout 5
+        set prompt {\.$}
+        spawn ${PY65MON_PATH}
+
+        expect -re \$prompt
+        send \"load ${FILE_PATH} 8000\n\"
+        expect -re \$prompt
+
+        foreach register {0 1 2 3 4 5 6 7 8 9 a b c d e f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f} number {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31} {
+            send \"add_label \$register r\$number\n\"
+            expect -re \$prompt
+        }
+
+        send \"add_label 20 sp\n\"
+        expect -re \$prompt
+
+        foreach register {22 26 2a 2e} number {0 1 2 3} {
+            send \"add_label \$register btmp\$number\n\"
+            expect -re \$prompt
+        }
+
+        log_file -a ${DISASSEMBLE_FILE}
+        send \"disassemble 8000:ffff\n\"
+        expect -re \$prompt
+        log_file
+    "
+    sed -i '1d' ${DISASSEMBLE_FILE}
+    sed -i '$ d' ${DISASSEMBLE_FILE}
+    sed -i '$ d' ${DISASSEMBLE_FILE}
+    sed -i '$ d' ${DISASSEMBLE_FILE}
+    sed -i '$ d' ${DISASSEMBLE_FILE}
+
+    # Parse ROM with assembly files in build directory
+    if [[ ${verbose} ]]; then
+        printf "INFO: calling python parsefile script with the following "
+        printf "arguments: ${FILE_PATH} ${DISASSEMBLE_FILE} "
+        printf "${label_locations}\n"
+    fi
+    python scripts/python/parseFile.py ${FILE_PATH} ${DISASSEMBLE_FILE} ${label_locations}
+    if [ -f ${label_locations} ]; then
+        if [[ ${verbose} ]]; then
+            printf "INFO: label locations parsed and outputted to "
+            printf "INFO: ${label_locations}. Incorporating them into "
+            printf "debugger...\n"
+        fi
+        method_locations=()
+        method_names=()
+        while IFS= read -r line; do
+            location=$(echo ${line} | awk -F "," '{ print $2 }')
+            name=$(echo ${line} | awk -F "," '{ print $1 }')
+            method_locations+=(${location})
+            method_names+=(${name})
+        done < "${label_locations}"
+    fi
 fi
 
 # Looking for infinite jmp loops
@@ -105,32 +175,6 @@ if [ ! -z "${infinite_loops}" ] && [[ ${verbose} ]]; then
     printf "\t0x%s\n" "${infinite_loops[@]}" 
 fi
 
-# Look for debugger file with segment info
-if [[ ! ${ignore_segments} ]]; then
-    if [ -f ${FILE_PATH}-debug ] && [ $(stat -c %Y ${FILE_PATH}) == $(stat -c %Y ${FILE_PATH}-debug) ]; then
-        if [[ ${verbose} ]]; then
-            printf "INFO: rawseg debug file found! Using this file to add labels to "
-            printf "monitor...\n"
-        fi
-        segment_table=$(cat ${FILE_PATH}-debug | awk -F "$(basename ${FILE_PATH})-debug." '{print $2}' | sed 's/\"//g')
-        segment_names=($(echo "$segment_table" | awk -F " " '{ print $1 }'))
-        segment_locations=($(echo "$segment_table" | awk -F " " '{ print $2 }' | awk -F "x" '{ print $2 }'))
-        segment_lengths=($(echo "$segment_table" | awk -F " " '{ print $3 }' | awk -F "x" '{ print $2 }'))
-    else
-        printf "WARN: It looks like you don't have a debugger file for the binary "
-        printf "you inputted. If you want segment tables added as labels to the "
-        printf "binary, run:\n"
-        printf "\t%s/buildmanually.sh --all --debug --save-output-files\n" "$(dirname ${SCRIPT})"
-        read -p "Do you want to continue (press y to continue)?" -n 1 -r
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            printf "\nINFO: Exiting...\n"
-            exit
-        else
-            printf "\n"
-        fi
-    fi
-fi
-
 # Get starting address
 ENTRY_POINT_DEC=$(convert_hex_to_dec ${ENTRY_POINT})
 START_ADDR_BE=$(get_2B_from_file_at_addr ${ENTRY_POINT_DEC})
@@ -143,7 +187,13 @@ if [[ ${verbose} ]]; then
     printf "to exit.\n"
 fi
 
+LOG_USER=0
+if [[ ${verbose} ]]; then
+    LOG_USER=1
+fi
+
 expect -c "
+    log_user ${LOG_USER}
     set timeout 5
     set prompt {\.$}
     spawn ${PY65MON_PATH}
@@ -160,16 +210,16 @@ expect -c "
     send \"step\n\"
     expect -re \$prompt
 
-    foreach register {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31} {
-        send \"add_label \$register r\$register\n\"
+    foreach register {0 1 2 3 4 5 6 7 8 9 a b c d e f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f} number {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31} {
+        send \"add_label \$register r\$number\n\"
         expect -re \$prompt
     }
 
-    send \"add_label 32 sp\n\"
+    send \"add_label 20 sp\n\"
     expect -re \$prompt
 
-    foreach register {0 1 2 3} {
-        send \"add_label [expr 33 + 4 * \$register] btmp\$register\n\"
+    foreach register {22 26 2a 2e} number {0 1 2 3} {
+        send \"add_label \$register btmp\$number\n\"
         expect -re \$prompt
     }
 
@@ -186,28 +236,23 @@ expect -c "
     send \"add_label 6003 DDRA\n\"
     expect -re \$prompt
 
-    foreach name {${segment_names[*]}} location {${segment_locations[*]}} {
-        send \"add_label \$location \$name\n\"
-        expect -re \$prompt
-    }
-
-    for {set i 0} {\$i < [llength {${jmp_address_machine_hex[*]}}]}  { incr i } {
-        set  location  [lindex {${jmp_address_machine_hex[*]}} \$i]
+    for {set i 0} {\$i < [llength {${infinite_loops[*]}}]}  { incr i } {
+        set  location  [lindex {${infinite_loops[*]}} \$i]
         send \"add_label \$location infiniteLoop\$i\n\"
         expect -re \$prompt
         send \"add_breakpoint infiniteLoop\$i\n\"
         expect -re \$prompt
     }
 
+    foreach location {${method_locations[*]}} name {${method_names[*]}} {
+        send \"add_label \$location \$name\n\"
+        expect -re \$prompt
+    }
+
     send \"fill 0000:7fff 0\n\"
     expect -re \$prompt
+    log_user 1
 
-    send \"add_label 8000 romStart\n\"
-    expect -re \$prompt
-    send \"add_label ${START_ADDR_LE} start\n\"
-    expect -re \$prompt
-    send \"add_label ffff romEnd\n\"
-    expect -re \$prompt
     send \"show_labels\n\"
     expect -re \$prompt
 

@@ -42,19 +42,12 @@ void set_hardware_sp_address(__reg("a") char val) =
 
 extern int main(int argc, char **argv);
 
-#pragma section exit
-
 // Is called once main completes
 void exit()
 {
-#if DEBUG
-    __asm("\tBRK");
-#endif
     // jmp to exit indefinitely
     exit();
 }
-
-#pragma section handler
 
 // After init is called, this handles the call to main and then exit.
 void start()
@@ -63,11 +56,12 @@ void start()
     exit();
 }
 
-#pragma section entry
-void init1()
+#pragma section init
+void init()
 {
     set_user_sp_address(&_SE);
     set_hardware_sp_address(0xff);
     lcd_reset();
     start();
 }
+# pragma section default
