@@ -22,7 +22,9 @@ In order to use the debugger setup for this project, you need `expect` and `cond
 
     sudo apt install expect
 
-and you can install conda via their website: https://conda.io/en/latest/miniconda.html OR https://docs.conda.io/projects/conda/en/latest/user-guide/install/rpm-debian.html if you want to setup the debian repo.
+and you can install conda via their website: https://conda.io/en/latest/miniconda.html. Once installed, use the install script to install the environment:
+
+    ./scripts/install_conda_env.sh
 
 ### How To Launch The Debugger
 In the scripts directory, there is a `launch_debugger.sh` script to attempt to automate a lot of tasks that occur prior to debugging a binary file. It will automatically setup the ROM to the correct address space, add various labels useful to debugging (such as register names, hardware locations, method locations, label locations), and adds breakpoints at infinite jmp loops. It is recommended you build the binary using the recommended command for building a binary to debug above, but it is not required. You can launch the debugger on any binary file, but more information/labels will be added if you build it as recommended because of the output assembly files that are build with the `--save-output-files` flag. These create the labels for method locations. In order to launch the debugger, run the following:
@@ -31,7 +33,7 @@ In the scripts directory, there is a `launch_debugger.sh` script to attempt to a
 
 The script will point the monitor to the address speficied at 0x7ffc. Because of this action, the number of cycles displayed by py65mon will be 3 rather than 0. It is better to use cycles as a relative number rather than an absolute number.
 
-Without the `--find-labels` flag, no additional labels will be added for method and label locations from the assembly output file. You can also use the `--verbose` flag for more information on what is happening in the background.
+Without the `--find-labels` flag, no additional labels will be added for method and label locations from the assembly output file. You can also use the `--verbose` flag for more information on what is happening in the background. This flag is currently under construction and works most of the time, but there are times where it will not. It will hardly error, but if it does, then don't use the flag. For the most part it will either find all labels or most of them. As the project continues, this should get better and better.
 
 ### Debugger Primer
 If you just want to run the binary and see what is outputted to the LCD, then once the debugger is launched, pass the `goto` command into py65mon using the current address that it is displaying (under PC). This will run the binary with the current state of the machine. If it doesn't hit a breakpoint or it hangs, you can use `ctrl+c` to break and it will tell you the current state of the machine, including what was sent to the LCD. Similarly, you can use `return` to run your file and stop just before the next RTS or RTI is executed. `step` will just execute one command. 
