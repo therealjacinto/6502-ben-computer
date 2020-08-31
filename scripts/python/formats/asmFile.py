@@ -19,7 +19,7 @@ def isComment(line):
     return False
 
 def isSectionHeader(line):
-    if re.match("^\tsection\t", line):
+    if line.startswith("\tsection\t"):
         return True
     return False
 
@@ -77,3 +77,6 @@ def formatOpArg(opTuple):
     elif opTuple[1].startswith("#$"):
         return opTuple[1][2:]
     return opTuple[1]
+
+def formatSectionName(line):
+    return line.strip("\t").replace("section","").strip('"').strip()

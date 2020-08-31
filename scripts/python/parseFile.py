@@ -8,10 +8,13 @@ import formats.asmFile as asmFile
 import formats.monFile as monFile
 
 def getMethods(filename, methodDict):
+    dataIgnore = ["data"]
     with open(filename, "r") as fp:
         line = fp.readline()
         while line:
-            if asmFile.isMethod(line):
+            if asmFile.isSectionHeader(line) and asmFile.formatSectionName(line) in dataIgnore:
+                fp.readline()
+            elif asmFile.isMethod(line):
                 methodName = asmFile.formatMethodName(line)
                 methodDict[methodName] = []
                 line = fp.readline()
@@ -32,7 +35,6 @@ def findMethod(filename, method, actions, locationDict):
         while line:
             if actions_i == 0:
                 address = monFile.formatAddr(line)
-                #print(address)
             # Try and catch exit
             if len(actions) == 1 and utilities.infiniteLoop(method, address, actions[actions_i], monFile.formatOp(line)):
                 locationDict[method] = address
@@ -46,15 +48,11 @@ def findMethod(filename, method, actions, locationDict):
             else:
                 actions_i = 0
             line = fp.readline()
-        #if key not in locationDict:
-        #    print(key + " not found")
 
 def findMethods(filename, methodDict, locationDict):
     for method, actions in methodDict.items():
         if method in locationDict:
             continue
-        #if key != "_main":
-        #    continue
         findMethod(filename, method, actions, locationDict)
 
 def findLabel(filename, label, actions, locationDict):
