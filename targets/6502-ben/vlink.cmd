@@ -15,7 +15,7 @@ SECTIONS
     bss     (NOLOAD) : {*(bss)}     >ram
     text             : {*(text)}    >rom
     init             : {*(init)}    >rom
-    data    (NOLOAD) : {*(data)}    >ram  AT>rom
+    data             : {*(data)}    >ram  AT>rom
     rodata           : {*(rodata)}  >rom
     
     

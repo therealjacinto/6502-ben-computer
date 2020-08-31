@@ -1,6 +1,6 @@
 #include "lcdio/lcdio.h"
 
-char message[6];
+char message[6] = {0};
 
 // Add the character in the A register to the beginning of the 
 // null-terminated string `message`
