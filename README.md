@@ -55,4 +55,4 @@ The labelling process (`parseFile.py`) can use some improvements, in particular 
 
 There is much optimization that can be done as I learn more about how to use `vbcc`. I can utilize more inline functions, avoid saving register states when entering certain functions, etc.
 
-Also, I need to understand more about how to use certain libraries and include header files. In general, this is a big work in progress.
+Also, I need to understand more about how to use certain libraries and include header files.

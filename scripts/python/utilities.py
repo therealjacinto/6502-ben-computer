@@ -4,7 +4,7 @@ import formats.monFile as monFile
 startOfROMDec = 32768
 
 def lineMatch(asmOpTuple, disFileTuple, locationDict):
-    branches = ["bcs", "bcc", "bne", "beq"]
+    branches = ["bbr", "bbs", "bcc", "bcs", "beq", "bmi", "bne", "bpl", "bra", "bvc", "bvs"]
     if asmFile.formatOpCode(asmOpTuple) == monFile.formatOpCode(disFileTuple):
         if asmFile.formatOpArg(asmOpTuple) == monFile.formatOpArg(disFileTuple):
             return True
