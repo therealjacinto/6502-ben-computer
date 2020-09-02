@@ -55,7 +55,7 @@ def findMethods(filename, methodDict, locationDict):
             continue
         findMethod(filename, method, actions, locationDict)
 
-def findLabel(filename, label, actions, locationDict):
+def findLabel(filename, label, actions, locationDict, possibleLocations):
     with open(filename, "r") as fp:
         line = fp.readline()
         actions_i = 0
@@ -66,19 +66,26 @@ def findLabel(filename, label, actions, locationDict):
                 actions_i += 1
                 line = fp.readline()
             if actions_i == len(actions):
-                locationDict[label] = address
-                break
+                #locationDict[label] = address
+                possibleLocations[label].append(address)
+                actions_i = 0
+                continue
             else:
                 actions_i = 0
             line = fp.readline()
 
 def findLabels(filename, labelDict, locationDict):
+    possibleLocations = {}
     for label, actions in labelDict.items():
         if label in locationDict:
             continue
         if len(actions) < 3:
             continue
-        findLabel(filename, label, actions, locationDict)
+        if label not in possibleLocations:
+            possibleLocations[label] = []
+        findLabel(filename, label, actions, locationDict, possibleLocations)
+        if len(possibleLocations[label]) == 1:
+            locationDict[label] = possibleLocations[label][0]
 
 def getLabels(filename, labelDict, dataDict):
     with open(filename, "r") as fp:
