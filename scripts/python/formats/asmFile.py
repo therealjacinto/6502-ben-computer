@@ -80,3 +80,6 @@ def formatOpArg(opTuple):
 
 def formatSectionName(line):
     return line.strip("\t").replace("section","").strip('"').strip()
+
+def formatGlobalName(line):
+    return line.strip("\t").replace("global","").strip('"').strip()
