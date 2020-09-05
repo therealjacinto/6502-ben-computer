@@ -302,8 +302,6 @@ if __name__ == "__main__":
         lastSize = len(locations)
     findLabels(outFile, labels, locations, duplicateCount, ignorefile)
 
-    print(locations.keys())
-    #print(labels.keys())
     w = csv.writer(open(locationsFile, "w"))
     for key, val in locations.items():
         w.writerow([key, val])
