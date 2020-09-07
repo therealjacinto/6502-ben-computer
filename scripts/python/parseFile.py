@@ -95,7 +95,7 @@ def findMethods(filename, methodDict, locationDict, duplicateDict, unknownList, 
     for method, actions in methodDict.items():
         possibleLocations = []
         locationDictMethod = method[0]
-        if method[0] in duplicateDict:
+        if method[0] in duplicateDict and duplicateDict[method[0]] > 1:
             locationDictMethod = utilities.makeNameUniqueFromPath(method[0], method[1])
         # Ignore if location is already known
         if locationDictMethod in locationDict:
@@ -138,7 +138,7 @@ def findLabels(filename, labelDict, locationDict, duplicateDict, ignoreFileList)
     for label, actions in labelDict.items():
         locationDictLabel = label[0]
         possibleLocations = []
-        if label[0] in duplicateDict:
+        if label[0] in duplicateDict and duplicateDict[label[0]] > 1:
             locationDictLabel = utilities.makeNameUniqueFromPath(label[0], label[1])
         # Ignore if label location already found or label file name is in ignore list or if 
         # there are no actions associated with the label
@@ -173,7 +173,7 @@ def findLabel(filename, label, locationDictLabel, actions, locationDict, possibl
 def findLabelsFromMethods(filename, labelDict, methodDict, locationDict, duplicateDict, ignoreFileList):
     for label in labelDict:
         locationDictLabel = label[0]
-        if label[0] in duplicateDict:
+        if label[0] in duplicateDict and duplicateDict[label[0]] > 1:
             locationDictLabel = utilities.makeNameUniqueFromPath(label[0], label[1])
 
         if locationDictLabel in locationDict or label[1] in ignoreFileList:
@@ -219,16 +219,18 @@ def findData(filename, locationDictLabel, dataDict, locationDict, duplicateDict)
 def findDatas(filename, dataDict, locationDict, duplicateDict, ignoreFileList):
     for label, data in dataDict.items():
         locationDictLabel = label[0] 
-        if label[0] in duplicateDict:
-            locationDictLabel = label[0] + "-" + utilities.formatFileName(label[1])
+        if label[0] in duplicateDict and duplicateDict[label[0]] > 1:
+            locationDictLabel = utilities.makeNameUniqueFromPath(label[0], label[1])
         if locationDictLabel in locationDict or label[1] in ignoreFileList:
             continue
         findData(filename, locationDictLabel, data, locationDict, duplicateDict)
 
-def findIgnoreFiles(methodDict, locationDict, ignoreFileList):
+def findIgnoreFiles(methodDict, locationDict, ignoreFileList, duplicateDict):
     for method in methodDict:
-        if method[0] not in locationDict and method[0] + "-" + utilities.formatFileName(method[1]) not in locationDict:
+        if method[0] not in locationDict and utilities.makeNameUniqueFromPath(method[0], method[1]) not in locationDict:
             ignoreFileList.append(method[1])
+            if method[0] in duplicateDict:
+                duplicateDict[method[0]] -= 1
 
 def getGlobals(filename, globalList):
     with open(filename, "r") as fp:
@@ -243,6 +245,20 @@ def getGlobals(filename, globalList):
                     line = fp.readline()
             else:
                 line = fp.readline()
+
+def purgeMethods(methodDict, locationDict, duplicateDict):
+    for method in methodDict:
+        if utilities.makeNameUniqueFromPath(method[0], method[1]) in locationDict and duplicateDict[method[0]] < 2:
+            # Remove from location dict and add new name
+            locationDict[method[0]] = locationDict[utilities.makeNameUniqueFromPath(method[0], method[1])]
+            del locationDict[utilities.makeNameUniqueFromPath(method[0], method[1])]
+
+def purgeLabels(labelDict, duplicateDict, ignoreFileList):
+    for label in labelDict:
+        if label[1] in ignoreFileList and label[0] in duplicateCount:
+            duplicateDict[label[0]] -= 1
+
+
 
 if __name__ == "__main__":
     usage = sys.argv[0] + ":\nAssembly file parser. This script attempts to "
@@ -293,7 +309,12 @@ if __name__ == "__main__":
     while len(locations) != lastSize:
         findMethods(outFile, methods, locations, duplicateCount, nonRomLocations, globalNames)
         lastSize = len(locations)
-    findIgnoreFiles(methods, locations, ignorefile)
+    findIgnoreFiles(methods, locations, ignorefile, duplicateCount)
+
+    purgeMethods(methods, locations, duplicateCount)
+    combinedLabels = {**labels, **data}
+    purgeLabels(combinedLabels, duplicateCount, ignorefile)
+    
     findDatas(binFile, data, locations, duplicateCount, ignorefile)
     findLabelsFromMethods(outFile, labels, methods, locations, duplicateCount, ignorefile)
     lastSize = -1
