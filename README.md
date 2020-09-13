@@ -35,6 +35,12 @@ The script will point the monitor to the address speficied at 0x7ffc. Because of
 
 Without the `--find-labels` flag, no additional labels will be added for method and label locations from the assembly output file. You can also use the `--verbose` flag for more information on what is happening in the background. This flag is currently under construction and works most of the time, but there are times where it will not. It will hardly error, but if it does, then don't use the flag. For the most part it will either find all labels or most of them. As the project continues, this should get better and better.
 
+You can also use the launch_debugger script to just build the disassemble file and not launch the debugger. Use the `--disassemble-only` flag for this option.
+
+You may also specify the directory of the assembly files in case they aren't in the same place as the binary. You can do so like the following:
+
+    launch_debugger.sh [PATH_TO_BINARY] --find-labels --asm-directory [PATH_TO_ASM_FILES]
+
 ### Debugger Primer
 If you just want to run the binary and see what is outputted to the LCD, then once the debugger is launched, pass the `goto` command into py65mon using the current address that it is displaying (under PC). This will run the binary with the current state of the machine. If it doesn't hit a breakpoint or it hangs, you can use `ctrl+c` to break and it will tell you the current state of the machine, including what was sent to the LCD. Similarly, you can use `return` to run your file and stop just before the next RTS or RTI is executed. `step` will just execute one command. 
 

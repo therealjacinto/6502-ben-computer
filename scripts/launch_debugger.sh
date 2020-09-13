@@ -27,6 +27,17 @@ while [ $# -gt 0 ]; do
         "--find-labels")
             find_labels=true
             ;;
+        "--disassemble-only")
+            disassemble_only=true
+            ;;
+        "--conda-path")
+            shift
+            manual_conda_path=$1
+            ;;
+        "--asm-directory")
+            shift
+            asm_directory=$1
+            ;;
     esac
     shift
 done
@@ -39,11 +50,13 @@ if ! command -v expect &> /dev/null; then
 fi
 
 # Check if conda is installed
-if ! command -v conda &> /dev/null; then
-    printf "ERROR: conda is not installed. Please install it before running "
-    printf "this script. And install the conda environment by running the "
-    printf "install_conda_env.sh script.\n"
-    exit 1
+if [[ ! ${manual_conda_path} ]]; then
+    if ! command -v conda &> /dev/null; then
+        printf "ERROR: conda is not installed. Please install it before running "
+        printf "this script. And install the conda environment by running the "
+        printf "install_conda_env.sh script.\n"
+        exit 1
+    fi
 fi
 
 if [[ ${verbose} ]]; then
@@ -70,25 +83,29 @@ function convert_dec_to_hex ()
     printf "%x\n" ${1} 
 }
 
-# Find path of the emulator
-if [[ ${verbose} ]]; then
-    printf "INFO: Activating conda environment...\n"
+if [[ ! ${manual_conda_path} ]]; then
+    # Find path of the emulator
+    if [[ ${verbose} ]]; then
+        printf "INFO: Activating conda environment...\n"
+    fi
+    source ${CONDA_PATH}/etc/profile.d/conda.sh
+    # Check if conda environment has been installed
+    if ! conda env list | grep 6502 &> /dev/null; then
+        printf "ERROR: 6502 conda environment has not been installed. Please run "
+        printf "the install_conda_env.sh script before running this script.\n"
+        exit 1
+    fi
+    conda activate 6502
+    PY65MON_PATH=$(dirname $(which python))/py65mon
+else
+    PY65MON_PATH=${manual_conda_path}/py65mon
 fi
-source ${CONDA_PATH}/etc/profile.d/conda.sh
-# Check if conda environment has been installed
-if ! conda env list | grep 6502 &> /dev/null; then
-    printf "ERROR: 6502 conda environment has not been installed. Please run "
-    printf "the install_conda_env.sh script before running this script.\n"
-    exit 1
-fi
-conda activate 6502
-PY65MON_PATH=$(dirname $(which python))/py65mon
 if [[ ${verbose} ]]; then
     printf "INFO: py65mon path found! (${PY65MON_PATH})\n"
 fi
 
 # Disassemble ROM and save to DISASSEMBLE_FILE
-if [[ ${find_labels} ]]; then
+if [[ ${find_labels} ]] || [[ ${disassemble_only} ]]; then
     if [[ ${verbose} ]]; then
         printf "INFO: Attempting to find labels\n"
     fi
@@ -129,13 +146,27 @@ if [[ ${find_labels} ]]; then
     sed -i '$ d' ${DISASSEMBLE_FILE}
     sed -i '$ d' ${DISASSEMBLE_FILE}
 
+    if [[ ${disassemble_only} ]]; then
+        exit
+    fi
+
     # Parse ROM with assembly files in build directory
     if [[ ${verbose} ]]; then
         printf "INFO: calling python parsefile script with the following "
         printf "arguments: ${FILE_PATH} ${DISASSEMBLE_FILE} "
         printf "${label_locations}\n"
     fi
-    python scripts/python/parseFile.py ${FILE_PATH} ${DISASSEMBLE_FILE} ${label_locations}
+    if [[ ${manual_conda_path} ]]; then
+        python_path=${manual_conda_path}/python
+    else
+        python_path=python
+    fi
+    if [[ ${asm_directory} ]]; then
+        search_directory=${asm_directory}
+    else
+        search_directory=$(dirname ${FILE_PATH})
+    fi
+    ${python_path} scripts/python/parseFile.py ${FILE_PATH} ${search_directory} ${DISASSEMBLE_FILE} ${label_locations}
     if [ -f ${label_locations} ]; then
         if [[ ${verbose} ]]; then
             printf "INFO: label locations parsed and outputted to "
