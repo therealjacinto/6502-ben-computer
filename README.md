@@ -57,8 +57,6 @@ Finally, you can use `disassemble` to show the assembly code from a given addres
     .disassemble 8000:7fff
 
 ## TODO
-The labelling process (`parseFile.py`) can use some improvements, in particular if there exists more than one match for the label. If this is the case, we shouldn't determine its location until maybe we have more information.
-
 There is much optimization that can be done as I learn more about how to use `vbcc`. I can utilize more inline functions, avoid saving register states when entering certain functions, etc.
 
 Also, I need to understand more about how to use certain libraries and include header files.
