@@ -50,9 +50,11 @@ if [[ ${debug} ]]; then
     DEBUG_FLAG="-DDEBUG"
 fi
 
+mkdir -p ${REPOPATH}/build
+
 if [[ ${startup} ]]; then
     printf "INFO: Generating startup code assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=283 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=307 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=1 ${DEBUG_FLAG}
     printf "INFO: Compiling startup object files...\n"
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
@@ -62,8 +64,8 @@ fi
 if [[ ${assembler} ]]; then
     printf "INFO: Generating assembler output...\n"
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=447 ${DEBUG_FLAG}
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=275 ${DEBUG_FLAG}
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=1 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=259 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=283 ${DEBUG_FLAG}
 fi
 
 if [[ ${objects} ]]; then
