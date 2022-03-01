@@ -1,0 +1,97 @@
+This directory contains some simple tests for vbcc/6502
+that can be run on a C64, NES, Atari, BBC, MEGA65 or X16.
+
+mandelbrot.c (all):
+
+A simple mandelbrot generator taken from the cc65 samples.
+The graphics routines from cc65 have been replaced by a
+simple character buffer. For the C64, a version using
+coloured blocks can be compiled using -DC64. The other
+versions are using characters.
+
+
+fmandelbrot.c (all):
+
+The same generator, but the fixed point arithmetic has
+been replaced by floating point. The result is much
+slower but it produces a visibly better result. IEEE
+version is also available for some targets.
+
+
+dhry* (all):
+
+The standard dhrystone test. The timing routines have
+been adjusted to the C64. Not sure if timing is correct
+for all targets. When in doubt, use a stop clock and
+manually calculate dhrystones/s.
+
+The loop counter has been changed to unsigned int to
+allow more than 30000 iterations. Otherwise machines
+like MEGA65 would be too fast to deliver measurable
+results.
+
+The NES version is compiled to use a smaller array size
+to make up for its limited RAM. This should not affect
+execution time.
+
+To get dhrystones compiled with cc65, I had to add some more
+declarations (not sure why). Also the result does not
+seem to work without static-locals (which is a bit of
+cheating). Furthermore, the output of cc65 does not seem
+to be fully correct, but I have not investigated those
+issues further.
+
+I get about 75 dhrystones/s for cc65 and ~242 for vbcc on C64.
+
+
+calc.c (all):
+
+Another floating point test. It parses arithmetic
+expressions and calculates the result, e.g.
+
+> 1.3e4 + 2 * (3.5+4)
+
+It can be observed that the numerical precision of wozfp
+is not that great.
+
+The IEEE version offers great precision, but it needs
+much memory (mostly due to the unoptimized printf/scanf)
+and is only available for targets with enough unbanked
+memory.
+
+
+lazyNES:
+
+Several demos for the NES using the lazyNES libraries
+kindly provided by Matthias "lazycow" Bock. Those libs
+provide all crucial functionality needed to write games for
+the NES.
+Have a look at the README-lazynes.txt in this subdirectory.
+
+
+bank1-3:
+
+Some small tests/examples testing banking on the NES (two
+different mappers) and C64 with REU.
+
+
+reuflat.c:
+
+A small demo for the preliminary flat banking support for
+C64 REU.
+
+
+bankm65.c:
+
+A small demo for the preliminary banking support for the
+MEGA65.
+
+
+argv (C64, MEGA65, X16):
+
+A small demo using the argv-parser. If compiled with the
++c64r/+m65r/+x16r configuration it can be started multiple
+times.
+
+   RUN:REM arg1 arg2 ...
+

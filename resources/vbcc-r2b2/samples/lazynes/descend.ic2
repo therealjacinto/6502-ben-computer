@@ -1,0 +1,757 @@
+function GetMapData
+	allocreg r8/r9
+	allocreg r0/r1
+	move near-pointer r0/r1->r8/r9(field):r0/r1 size=2
+	freereg r0/r1
+	allocreg r26/r27
+	allocreg r24/r25
+	allocreg r22/r23
+	allocreg r20/r21
+	allocreg r18/r19
+	allocreg r16/r17
+	allocreg r14/r15
+	allocreg r12/r13
+	allocreg r10/r11
+	allocreg r6/r7
+	allocreg r4
+	allocreg r2
+	allocreg r1
+	allocreg r0
+	allocreg x
+	compare unsigned char r2(line):r2,0+L15(oldLine)
+	beq L43
+	freereg x
+	freereg r0
+	move unsigned char r2(line):r2->0+L15(oldLine) size=1
+	allocreg r0
+	and unsigned char r2(line):r2,#UC1->r0(0x556c26854be0)[S]
+	allocreg a/x
+	convert int r0(0x556c26854be0)[S]->a/x(0x556c26854e10)[S] from unsigned char
+	freereg r0
+	test int a/x(0x556c26854e10)[S]
+	freereg a/x
+	beq L19
+	allocreg r0
+	allocreg x
+	move unsigned char #UC16->x(yAdd) size=1
+	bra L28
+L19
+	move unsigned char #UC0->x(yAdd) size=1
+	add unsigned char 0+L11(ml1),#UC1->0+L11(ml1)
+	compare unsigned char 0+L11(ml1),#UC24
+	blt L22
+	move unsigned char #UC0->0+L11(ml1) size=1
+L22
+	add unsigned char 0+L13(mr1),#UC1->0+L13(mr1)
+	compare unsigned char 0+L13(mr1),#UC20
+	blt L24
+	move unsigned char #UC0->0+L13(mr1) size=1
+L24
+	add unsigned char 0+L12(ml2),#UC1->0+L12(ml2)
+	compare unsigned char 0+L12(ml2),#UC28
+	blt L26
+	move unsigned char #UC0->0+L12(ml2) size=1
+L26
+	add unsigned char 0+L14(mr2),#UC1->0+L14(mr2)
+	compare unsigned char 0+L14(mr2),#UC30
+	blt L28
+	move unsigned char #UC0->0+L14(mr2) size=1
+L28
+	move unsigned char #UC0->r0(x) size=1
+	add-int-to-pointer unsigned char #0+L9(l2Map),0+L12(ml2)->r10/r11(0x556c2686d5b0) ptype=near-pointer
+	add-int-to-pointer unsigned char #0+L10(r2Map),0+L14(mr2)->r14/r15(0x556c2686d6c0) ptype=near-pointer
+	add-int-to-pointer int r8/r9(field):r0/r1,#I24->r26/r27(0x556c2686d7e0) ptype=near-pointer (eff_ic)
+	add-int-to-pointer unsigned char #0+L7(l1Map),0+L11(ml1)->r16/r17(0x556c2686d940) ptype=near-pointer
+	add-int-to-pointer int r8/r9(field):r0/r1,#I8->r24/r25(0x556c2686dbd0) ptype=near-pointer (eff_ic)
+	add-int-to-pointer unsigned char #0+L8(r1Map),0+L13(mr1)->r12/r13(0x556c2686de60) ptype=near-pointer
+	add-int-to-pointer int r8/r9(field):r0/r1,#I20->0+1(FP)(0x556c2686e0f0) ptype=near-pointer (eff_ic)
+	allocreg a
+	and unsigned char r2(line):r2,#UC3->a(0x556c2685c4d0)[S]
+	convert int a(0x556c2685c4d0)[S]->r22/r23(0x556c2685fea0)[S] from unsigned char
+	freereg a
+	add-int-to-pointer int r8/r9(field):r0/r1,#I12->r20/r21(0x556c2686e380) ptype=near-pointer (eff_ic)
+	add-int-to-pointer int r8/r9(field):r0/r1,#I12->r18/r19(0x556c2686e610) ptype=near-pointer (eff_ic)
+	move unsigned char #UC32->r4(0x556c26875b20) size=1
+	move unsigned char #UC48->r1(0x556c268817c0) size=1
+	move unsigned char r4(0x556c26875b20)->0+0(FP)(0x556c26875b20) size=1
+	freereg r2
+	freereg r4
+	freereg r6/r7
+	allocreg r4/r5
+	allocreg r6
+	move unsigned char 0+0(FP)(0x556c26875b20)->r6(0x556c26875b20) size=1
+L41 (while-loop)
+	nop 
+	allocreg r2/r3
+	add-int-to-pointer const unsigned char #0+L5(l2Tab),([near-pointer]r10/r11(0x556c2686d5b0))->r2/r3(0x556c2685a0c0)[S] ptype=near-pointer (eff_ic)
+	nop 
+	allocreg a
+	add unsigned char x(yAdd),([near-pointer]r2/r3(0x556c2685a0c0)[S])->a(0x556c2685a1e0)[S]
+	freereg r2/r3
+	add unsigned char a(0x556c2685a1e0)[S],r0(x)->a(0x556c2685a300)[S]
+	allocreg r2/r3
+	add-int-to-pointer unsigned char r8/r9(field):r0/r1,r0(x)->r2/r3(0x556c2685a460)[S] ptype=near-pointer (eff_ic)
+	move unsigned char a(0x556c2685a300)[S]->([near-pointer]r2/r3(0x556c2685a460)[S]) size=1
+	freereg a
+	freereg r2/r3
+	nop 
+	allocreg r2/r3
+	add-int-to-pointer const unsigned char #0+L6(r2Tab),([near-pointer]r14/r15(0x556c2686d6c0))->r2/r3(0x556c2685b9e0)[S] ptype=near-pointer (eff_ic)
+	nop 
+	allocreg a
+	add unsigned char x(yAdd),([near-pointer]r2/r3(0x556c2685b9e0)[S])->a(0x556c2685bb00)[S]
+	freereg r2/r3
+	add unsigned char a(0x556c2685bb00)[S],r0(x)->a(0x556c2685bc20)[S]
+	convert int r0(x)->r4/r5(0x556c26861120) from unsigned char
+	allocreg r2/r3
+	add-int-to-pointer unsigned char r26/r27(0x556c2686d7e0),r0(x)->r2/r3(0x556c2685c0d0)[S] ptype=near-pointer (eff_ic)
+	move unsigned char a(0x556c2685bc20)[S]->([near-pointer]r2/r3(0x556c2685c0d0)[S]) size=1
+	freereg a
+	freereg r2/r3
+	compare unsigned char r0(x),#UC4
+	bge L34
+	nop 
+	allocreg r2/r3
+	add-int-to-pointer const unsigned char #0+L3(l1Tab),([near-pointer]r16/r17(0x556c2686d940))->r2/r3(0x556c2685d9e0)[S] ptype=near-pointer (eff_ic)
+	nop 
+	allocreg a
+	add unsigned char x(yAdd),([near-pointer]r2/r3(0x556c2685d9e0)[S])->a(0x556c2685db00)[S]
+	freereg r2/r3
+	add unsigned char a(0x556c2685db00)[S],r0(x)->a(0x556c2685dc20)[S]
+	allocreg r2/r3
+	add-int-to-pointer int r24/r25(0x556c2686dbd0),r4/r5(0x556c26861120)->r2/r3(0x556c2685e0d0)[S] ptype=near-pointer
+	move unsigned char a(0x556c2685dc20)[S]->([near-pointer]r2/r3(0x556c2685e0d0)[S]) size=1
+	freereg a
+	freereg r2/r3
+	nop 
+	allocreg r2/r3
+	add-int-to-pointer const unsigned char #0+L4(r1Tab),([near-pointer]r12/r13(0x556c2686de60))->r2/r3(0x556c2685f5c0)[S] ptype=near-pointer (eff_ic)
+	nop 
+	allocreg a
+	add unsigned char x(yAdd),([near-pointer]r2/r3(0x556c2685f5c0)[S])->a(0x556c2685f6e0)[S]
+	freereg r2/r3
+	add unsigned char a(0x556c2685f6e0)[S],r0(x)->a(0x556c2685f800)[S]
+	allocreg r2/r3
+	add-int-to-pointer int 0+1(FP)(0x556c2686e0f0),r4/r5(0x556c26861120)->r2/r3(0x556c2685fcb0)[S] ptype=near-pointer
+	move unsigned char a(0x556c2685f800)[S]->([near-pointer]r2/r3(0x556c2685fcb0)[S]) size=1
+	freereg a
+	freereg r2/r3
+L34
+	allocreg r2
+	test int r22/r23(0x556c2685fea0)[S]
+	bne L36
+	freereg r2
+	allocreg r2/r3
+	add-int-to-pointer int r20/r21(0x556c2686e380),r4/r5(0x556c26861120)->r2/r3(0x556c26860aa0)[S] ptype=near-pointer
+	move unsigned char r1(0x556c268817c0)->([near-pointer]r2/r3(0x556c26860aa0)[S]) size=1
+	freereg r2/r3
+	bra L37
+L36
+	allocreg r2/r3
+	add-int-to-pointer unsigned char r18/r19(0x556c2686e610),r0(x)->r2/r3(0x556c26861600)[S] ptype=near-pointer (eff_ic)
+	move unsigned char r6(0x556c26875b20)->([near-pointer]r2/r3(0x556c26861600)[S]) size=1
+	freereg r2/r3
+L37
+	allocreg r2
+	add unsigned char r0(x),#UC1->r0(x)
+	add unsigned char r1(0x556c268817c0),#UC1->r1(0x556c268817c0)
+	add unsigned char r6(0x556c26875b20),#UC1->r6(0x556c26875b20)
+	compare unsigned char r0(x),#UC8
+	blt L41
+	freereg r2
+L43
+	freereg r6
+	freereg r4/r5
+	allocreg r6/r7
+	allocreg r4
+	allocreg r2
+	freereg x
+	freereg r0
+	freereg r1
+	freereg r2
+	freereg r4
+	freereg r6/r7
+	freereg r8/r9
+	freereg r10/r11
+	freereg r12/r13
+	freereg r14/r15
+	freereg r16/r17
+	freereg r18/r19
+	freereg r20/r21
+	freereg r22/r23
+	freereg r24/r25
+	freereg r26/r27
+function main
+	allocreg r18/r19
+	allocreg r14/r15
+	allocreg r4/r5
+	allocreg r23
+	move unsigned char 0+13(FP)(fOff)->r23(fOff) size=1
+	allocreg r22
+	move char 0+12(FP)(step)->r22(step) size=1
+	allocreg r21
+	move unsigned char 0+14(FP)(sOff)->r21(sOff) size=1
+	allocreg r20
+	allocreg r12
+	allocreg r11
+	allocreg r10
+	allocreg r9
+	allocreg r8
+	move short #S0->0+2(FP)(tics) size=2
+	allocreg a
+	move unsigned char #UC1->a(0x556c2689c450):a[S] size=1
+	call function 0+_lnSync(lnSync) size=0 => lnSync
+	nop a(0x556c2689c450):a[S]
+	freereg a
+	allocreg a
+	get-return unsigned char ->a(0x556c2689c0b0)[S]
+	allocreg r16
+	and unsigned char a(0x556c2689c0b0)[S],#UC128->r16(ntsc)[S]
+	freereg a
+	allocreg a/x
+	move unsigned short #US16128->a/x(0x556c2689de40):a/x[S] size=2
+	allocreg r0
+	move unsigned char #UC8->r0(0x556c2689da50):r0[S] size=1
+	allocreg r2/r3
+	move near-pointer #0+_chrPal(chrPal)->r2/r3(0x556c2689d8f0):r2/r3[S] size=2
+	call function 0+_lnPush(lnPush) size=0 => lnPush
+	nop a/x(0x556c2689de40):a/x[S]
+	freereg a/x
+	nop r0(0x556c2689da50):r0[S]
+	freereg r0
+	nop r2/r3(0x556c2689d8f0):r2/r3[S]
+	freereg r2/r3
+	allocreg a/x
+	move unsigned short #US16145->a/x(0x556c26893c30):a/x[S] size=2
+	allocreg r0
+	move unsigned char #UC3->r0(0x556c268759e0):r0[S] size=1
+	allocreg r2/r3
+	move near-pointer #1+_sprPal(sprPal)->r2/r3(0x556c268906a0):r2/r3[S] size=2
+	call function 0+_lnPush(lnPush) size=0 => lnPush
+	nop a/x(0x556c26893c30):a/x[S]
+	freereg a/x
+	nop r0(0x556c268759e0):r0[S]
+	freereg r0
+	nop r2/r3(0x556c268906a0):r2/r3[S]
+	freereg r2/r3
+	allocreg a/x
+	move unsigned short #US16149->a/x(0x556c2686dcd0):a/x[S] size=2
+	allocreg r0
+	move unsigned char #UC3->r0(0x556c2686da40):r0[S] size=1
+	allocreg r2/r3
+	move near-pointer #5+_sprPal(sprPal)->r2/r3(0x556c268603c0):r2/r3[S] size=2
+	call function 0+_lnPush(lnPush) size=0 => lnPush
+	nop a/x(0x556c2686dcd0):a/x[S]
+	freereg a/x
+	nop r0(0x556c2686da40):r0[S]
+	freereg r0
+	nop r2/r3(0x556c268603c0):r2/r3[S]
+	freereg r2/r3
+	allocreg a/x
+	move unsigned short #US16153->a/x(0x556c26897c90):a/x[S] size=2
+	allocreg r0
+	move unsigned char #UC3->r0(0x556c2688e550):r0[S] size=1
+	allocreg r2/r3
+	move near-pointer #9+_sprPal(sprPal)->r2/r3(0x556c2688e7c0):r2/r3[S] size=2
+	call function 0+_lnPush(lnPush) size=0 => lnPush
+	nop a/x(0x556c26897c90):a/x[S]
+	freereg a/x
+	nop r0(0x556c2688e550):r0[S]
+	freereg r0
+	nop r2/r3(0x556c2688e7c0):r2/r3[S]
+	freereg r2/r3
+	allocreg r0/r1
+	move near-pointer #0+_musicData(musicData)->r0/r1(0x556c26857830):r0/r1[S] size=2
+	allocreg a
+	move unsigned char r16(ntsc)[S]->a(0x556c26857a60):a[S] size=1
+	freereg r16
+	call function 0+_ftInit(ftInit) size=0 => ftInit
+	nop r0/r1(0x556c26857830):r0/r1[S]
+	freereg r0/r1
+	nop a(0x556c26857a60):a[S]
+	freereg a
+	move unsigned char #UC0->r20(y) size=1
+L201 (while-loop)
+	allocreg r16/r17
+	allocreg r1
+	allocreg r6/r7
+	convert unsigned short r20(y)->r6/r7(0x556c26856b50)[S] from unsigned char
+	lsl unsigned short r6/r7(0x556c26856b50)[S],#I3->r6/r7(0x556c26856c70)[S] shift-type int
+	allocreg a/x
+	add unsigned short r6/r7(0x556c26856c70)[S],#US9152->a/x(0x556c26861480):a/x[S]
+	freereg r6/r7
+	nop unsigned short 
+	allocreg r0
+	move unsigned char #UC8->r0(0x556c268616b0):r0[S] size=1
+	allocreg r2/r3
+	move near-pointer #0+L52(aTab)->r2/r3(0x556c26861920):r2/r3[S] size=2
+	call function 0+_lnPush(lnPush) size=0 => lnPush
+	nop a/x(0x556c26861480):a/x[S]
+	freereg a/x
+	nop r0(0x556c268616b0):r0[S]
+	freereg r0
+	nop r2/r3(0x556c26861920):r2/r3[S]
+	freereg r2/r3
+	add unsigned char r20(y),#UC1->r20(y)
+	compare unsigned char r20(y),#UC8
+	blt L201
+L208 (while-loop)
+	allocreg r2/r3
+	allocreg r0
+	allocreg x
+	move unsigned short #US0->0+4(FP)(vramOff) size=2
+	move near-pointer #0+L61(updateList)->r16/r17(p) size=2
+	convert int 0+2(FP)(tics)->r18/r19(0x556c2693e7d0) from short
+	test int r18/r19(0x556c2693e7d0)
+	bne L64
+	move short #S16->0+8(FP)(ey) size=2
+	move unsigned short #US4->0+10(FP)(ev) size=2
+	move char #C0->r22(step) size=1
+	move unsigned char #UC0->r23(fOff) size=1 align=16385
+
+	move unsigned char #UC0->r21(sOff) size=1
+	move unsigned short #US0->0+15(FP)(yOff) size=2 align=257
+
+	move unsigned char #UC255->0+17(FP)(previous) size=1
+	allocreg a
+	move unsigned char #UC0->a(0x556c2685b6d0):a[S] size=1
+	call function 0+_ftMusicPlay(ftMusicPlay) size=0 => ftMusicPlay
+	nop a(0x556c2685b6d0):a[S]
+	freereg a
+L64
+	convert unsigned char 0+2(FP)(tics)->r12(0x556c26914b30) from short
+	allocreg a
+	and unsigned char r12(0x556c26914b30),#UC3->a(0x556c268ff4f0)[S]
+	convert int a(0x556c268ff4f0)[S]->r14/r15(0x556c26914a30) from unsigned char
+	freereg a
+	test int r14/r15(0x556c26914a30)
+	bne L66
+	compare int r18/r19(0x556c2693e7d0),#I2520
+	blt L68
+	compare unsigned char r23(fOff),#UC30
+	blt L79
+	move unsigned char #UC0->r23(fOff) size=1
+	bra L79
+L68
+	compare int r18/r19(0x556c2693e7d0),#I2400
+	bge L79
+	compare int r18/r19(0x556c2693e7d0),#I320
+	blt L75
+	allocreg a
+	and unsigned char r12(0x556c26914b30),#UC7->a(0x556c26895f60)[S]
+	allocreg r6/r7
+	convert int a(0x556c26895f60)[S]->r6/r7(0x556c26896190)[S] from unsigned char
+	freereg a
+	test int r6/r7(0x556c26896190)[S]
+	freereg r6/r7
+	beq L72
+L75
+	compare int r18/r19(0x556c2693e7d0),#I520
+	blt L79
+	test int r14/r15(0x556c26914a30)
+	bne L79
+L72
+	add unsigned short 0+15(FP)(yOff),#US1->0+15(FP)(yOff)
+	add unsigned char r21(sOff),#UC1->r21(sOff)
+	compare unsigned char r21(sOff),#UC240
+	blt L79
+	sub unsigned char r21(sOff),#UC240->r21(sOff)
+L79
+	allocreg a
+	and unsigned char r12(0x556c26914b30),#UC7->a(0x556c26855d60)[S]
+	allocreg r6/r7
+	convert int a(0x556c26855d60)[S]->r6/r7(0x556c26855f50)[S] from unsigned char
+	freereg a
+	test int r6/r7(0x556c26855f50)[S]
+	freereg r6/r7
+	bne L83
+	add unsigned short 0+10(FP)(ev),#US1->0+10(FP)(ev)
+	allocreg r6/r7
+	convert unsigned int 0+10(FP)(ev)->r6/r7(0x556c268566e0)[S] from unsigned short
+	compare unsigned int r6/r7(0x556c268566e0)[S],#UI16
+	freereg r6/r7
+	ble L83
+	move unsigned short #US16->0+10(FP)(ev) size=2
+L83
+	allocreg r6/r7
+	convert short 0+10(FP)(ev)->r6/r7(0x556c268990d0)[S] from unsigned short
+	add short r6/r7(0x556c268990d0)[S],0+8(FP)(ey)->0+8(FP)(ey)
+	freereg r6/r7
+L66
+	compare unsigned char r23(fOff),#UC30
+	bge L85
+	allocreg a
+	and unsigned char r12(0x556c26914b30),#UC1->a(0x556c26899b60)[S]
+	allocreg r6/r7
+	convert int a(0x556c26899b60)[S]->r6/r7(0x556c26899d50)[S] from unsigned char
+	freereg a
+	test int r6/r7(0x556c26899d50)[S]
+	freereg r6/r7
+	bne L214
+	move unsigned char #UC1->x(passes) size=1
+	test char r22(step)
+	bne L89
+	compare int r18/r19(0x556c2693e7d0),#I2400
+	bge L89
+	move unsigned char #UC2->x(passes) size=1
+L89
+	move unsigned char #UC0->r10(i) size=1
+	compare unsigned char x(passes),#UC0
+	ble L210
+	convert char r23(fOff)->0+20(FP)(0x556c268a04a0)[S] from unsigned char
+	allocreg a
+	lsr unsigned char r21(sOff),#I3->a(0x556c268a38f0)[S] shift-type int
+	convert char a(0x556c268a38f0)[S]->0+21(FP)(0x556c268a3ae0)[S] from unsigned char
+	freereg a
+	allocreg a
+	convert unsigned char r22(step)->a(0x556c268ad140)[S] from char
+	lsl unsigned char a(0x556c268ad140)[S],#I1->0+22(FP)(0x556c268ad260)[S] shift-type int
+	freereg a
+	freereg r9
+	freereg r2/r3
+L203 (while-loop)
+	allocreg r3
+	allocreg r2
+	allocreg a
+	convert char r10(i)->a(0x556c268a06d0)[S] from unsigned char
+	sub char 0+20(FP)(0x556c268a04a0)[S],a(0x556c268a06d0)[S]->r8(y)
+	freereg a
+	test unsigned char r10(i)
+	bne L96
+	freereg r0
+	freereg r1
+	freereg r2
+	allocreg a
+	convert unsigned char r8(y)->a(0x556c268a1480)[S] from char
+	allocreg r0/r1
+	move near-pointer #0+L62(mapLine)->r0/r1(0x556c268a1990):r0/r1[S] size=2
+	allocreg r2
+	move unsigned char a(0x556c268a1480)[S]->r2(0x556c268a1bc0):r2[S] size=1
+	freereg a
+	move int r18/r19(0x556c2693e7d0)->0+6(FP)(0x556c2693e7d0) size=2
+	move near-pointer r16/r17(p)->0+0(FP)(p) size=2
+	move unsigned char r23(fOff)->0+13(FP)(fOff) size=1
+	move char r22(step)->0+12(FP)(step) size=1
+	move unsigned char r21(sOff)->0+14(FP)(sOff) size=1
+	move unsigned char r10(i)->0+19(FP)(i) size=1
+	move char r8(y)->0+23(FP)(y) size=1
+	move unsigned char x(passes)->0+18(FP)(passes) size=1
+	call function 0+_GetMapData(GetMapData) size=0 => GetMapData
+	move int 0+6(FP)(0x556c2693e7d0)->r18/r19(0x556c2693e7d0) size=2
+	move near-pointer 0+0(FP)(p)->r16/r17(p) size=2
+	move unsigned char 0+13(FP)(fOff)->r23(fOff) size=1
+	move char 0+12(FP)(step)->r22(step) size=1
+	move unsigned char 0+14(FP)(sOff)->r21(sOff) size=1
+	move unsigned char 0+19(FP)(i)->r10(i) size=1
+	move char 0+23(FP)(y)->r8(y) size=1
+	move unsigned char 0+18(FP)(passes)->x(passes) size=1
+	nop r0/r1(0x556c268a1990):r0/r1[S]
+	freereg r0/r1
+	nop r2(0x556c268a1bc0):r2[S]
+	freereg r2
+L96
+	allocreg r2
+	allocreg r1
+	allocreg r0
+	add char r8(y),0+21(FP)(0x556c268a3ae0)[S]->r8(y)
+	compare char r8(y),#C30
+	blt L98
+	sub char r8(y),#C30->r8(y)
+L98
+	compare char r8(y),#C0
+	blt L212
+	compare char r8(y),#C30
+	bge L212
+	allocreg r6/r7
+	convert unsigned short r8(y)->r6/r7(0x556c268a5080)[S] from char
+	lsl unsigned short r6/r7(0x556c268a5080)[S],#I5->r6/r7(0x556c268a51a0)[S] shift-type int
+	add unsigned short r6/r7(0x556c268a51a0)[S],#US8192->0+4(FP)(vramOff)
+	freereg r6/r7
+	allocreg r6/r7
+	lsr unsigned short 0+4(FP)(vramOff),#I8->r6/r7(0x556c268a5850)[S] shift-type int
+	convert unsigned int r6/r7(0x556c268a5850)[S]->r6/r7(0x556c268a5a80)[S] from unsigned short
+	or unsigned int r6/r7(0x556c268a5a80)[S],#UI64->r6/r7(0x556c268a5ba0)[S]
+	convert unsigned char r6/r7(0x556c268a5ba0)[S]->([near-pointer]r16/r17(p)[S]) from unsigned int
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	allocreg r6/r7
+	convert unsigned int 0+4(FP)(vramOff)->r6/r7(0x556c268a6450)[S] from unsigned short
+	and unsigned int r6/r7(0x556c268a6450)[S],#UI255->r6/r7(0x556c268a6530)[S]
+	convert unsigned char r6/r7(0x556c268a6530)[S]->([near-pointer]r16/r17(p)[S]) from unsigned int
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	move unsigned char #UC32->([near-pointer]r16/r17(p)[S]) size=1
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	move unsigned char #UC0->r1(x) size=1
+	move unsigned char x(passes)->0+18(FP)(passes) size=1
+	move unsigned char r1(x)->0+0(FP)(x) size=1
+	test unsigned char r10(i)
+	beq L205
+	freereg r1
+	move unsigned char 0+0(FP)(x)->x(x) size=1
+L197 (while-loop)
+	allocreg r6/r7
+	add-int-to-pointer unsigned char #0+L62(mapLine),x(x)->r6/r7(0x556c268a8410)[S] ptype=near-pointer (eff_ic)
+	move unsigned char ([near-pointer]r6/r7(0x556c268a8410)[S])->([near-pointer]r16/r17(p)[S]) size=1
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	add unsigned char x(x),#UC1->x(x)
+	compare unsigned char x(x),#UC32
+	blt L197
+	allocreg r1
+	move unsigned char 0+18(FP)(passes)->x(passes) size=1
+	bra L212
+L205 (while-loop)
+	allocreg r6/r7
+	convert int r1(x)->r6/r7(0x556c268aada0)[S] from unsigned char
+	lsl int r6/r7(0x556c268aada0)[S],#I1->r6/r7(0x556c268aaec0)[S] shift-type int
+	add-int-to-pointer int #0+L62(mapLine),r6/r7(0x556c268aaec0)[S]->r6/r7(0x556c268ab020)[S] ptype=near-pointer
+	convert int ([near-pointer]r6/r7(0x556c268ab020)[S])->r6/r7(0x556c268ac220)[S] from unsigned char
+	lsr int r6/r7(0x556c268ac220)[S],#I1->r6/r7(0x556c268ac300)[S] shift-type int
+	add-int-to-pointer int #0+_fTab(fTab),r6/r7(0x556c268ac300)[S]->r6/r7(0x556c268ac3e0)[S] ptype=near-pointer
+	move unsigned char ([near-pointer]r6/r7(0x556c268ac3e0)[S])->r3(fadeType) size=1
+	freereg r6/r7
+	compare char r22(step),#C0
+	bge L114
+	move unsigned char #UC0->r3(fadeType) size=1
+	bra L117
+L114
+	test unsigned char r3(fadeType)
+	beq L117
+	add unsigned char 0+22(FP)(0x556c268ad260)[S],r3(fadeType)->r3(fadeType)
+L117
+	move unsigned char r3(fadeType)->([near-pointer]r16/r17(p)[S]) size=1
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	add unsigned char r3(fadeType),#UC1->([near-pointer]r16/r17(p)[S])
+	nop unsigned char 
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	add unsigned char r1(x),#UC1->r1(x)
+	compare unsigned char r1(x),#UC16
+	blt L205
+L212
+	add unsigned char r10(i),#UC1->r10(i)
+	compare unsigned char r10(i),x(passes)
+	blt L203
+L210
+	freereg r2
+	freereg r3
+	allocreg r2/r3
+	allocreg r9
+	compare int r18/r19(0x556c2693e7d0),#I2400
+	bge L119
+	add char r22(step),#C1->r22(step)
+	compare char r22(step),#C3
+	blt L214
+	add unsigned char r23(fOff),#UC1->r23(fOff)
+	move char #C0->r22(step) size=1
+	bra L214
+L119
+	sub char r22(step),#C1->r22(step)
+	compare char r22(step),#C-1
+	bge L124
+	add unsigned char r23(fOff),#UC1->r23(fOff)
+	move char #C2->r22(step) size=1
+L124
+	compare unsigned char r23(fOff),#UC30
+	blt L214
+	move short #S-1->0+2(FP)(tics) size=2
+	bra L214
+L85
+	allocreg a
+	and unsigned char r21(sOff),#UC7->a(0x556c268b2030)[S]
+	allocreg r6/r7
+	convert int a(0x556c268b2030)[S]->r6/r7(0x556c268b2260)[S] from unsigned char
+	freereg a
+	test int r6/r7(0x556c268b2260)[S]
+	freereg r6/r7
+	bne L214
+	compare unsigned char 0+17(FP)(previous),r21(sOff)
+	beq L214
+	compare int r18/r19(0x556c2693e7d0),#I2520
+	bge L214
+	freereg r8
+	freereg r9
+	lsr unsigned char r21(sOff),#I3->r11(y) shift-type int
+	move unsigned char r21(sOff)->0+17(FP)(previous) size=1
+	allocreg r6/r7
+	convert unsigned short r11(y)->r6/r7(0x556c268b3420)[S] from unsigned char
+	lsl unsigned short r6/r7(0x556c268b3420)[S],#I5->r6/r7(0x556c268b3500)[S] shift-type int
+	add unsigned short r6/r7(0x556c268b3500)[S],#US8192->r6/r7(vramOff)[S]
+	allocreg r8/r9
+	lsr unsigned short r6/r7(vramOff)[S],#I8->r8/r9(0x556c268b3c10)[S] shift-type int
+	convert unsigned int r8/r9(0x556c268b3c10)[S]->r8/r9(0x556c268b3e40)[S] from unsigned short
+	or unsigned int r8/r9(0x556c268b3e40)[S],#UI64->r8/r9(0x556c268b3f60)[S]
+	move near-pointer #1+L61(updateList)->r16/r17(p) size=2 align=10
+
+	convert unsigned char r8/r9(0x556c268b3f60)[S]->0+L61(updateList) from unsigned int
+	freereg r8/r9
+	convert unsigned int r6/r7(vramOff)[S]->r6/r7(0x556c268b4810)[S] from unsigned short
+	and unsigned int r6/r7(0x556c268b4810)[S],#UI255->r6/r7(0x556c268b48f0)[S]
+	convert unsigned char r6/r7(0x556c268b48f0)[S]->([near-pointer]r16/r17(p)[S]) from unsigned int
+	freereg r6/r7
+	move unsigned char #UC32->2+L61(updateList) size=1
+	move near-pointer #3+L61(updateList)->r16/r17(p) size=2 align=10
+
+	move unsigned char #UC0->r10(i) size=1
+	move unsigned char r10(i)->0+19(FP)(i) size=1
+	freereg r10
+	freereg r2/r3
+	allocreg r9
+	allocreg r8
+	allocreg r2
+	move unsigned char 0+19(FP)(i)->x(i) size=1
+L199 (while-loop)
+	move unsigned char #UC0->([near-pointer]r16/r17(p)[S]) size=1
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	add unsigned char x(i),#UC1->x(i)
+	compare unsigned char x(i),#UC32
+	blt L199
+	freereg r2
+	allocreg r2/r3
+	allocreg r10
+	test unsigned char r11(y)
+	bne L137
+	move unsigned char #UC29->r11(y) size=1
+	bra L138
+L137
+	sub unsigned char r11(y),#UC1->r11(y)
+	freereg r0
+	freereg r1
+	freereg r2/r3
+L138
+	allocreg r6/r7
+	convert unsigned short r11(y)->r6/r7(0x556c268b7580)[S] from unsigned char
+	lsl unsigned short r6/r7(0x556c268b7580)[S],#I5->r6/r7(0x556c268b7660)[S] shift-type int
+	add unsigned short r6/r7(0x556c268b7660)[S],#US8192->0+4(FP)(vramOff)
+	freereg r6/r7
+	allocreg r6/r7
+	lsr unsigned short 0+4(FP)(vramOff),#I8->r6/r7(0x556c268b7b90)[S] shift-type int
+	convert unsigned int r6/r7(0x556c268b7b90)[S]->r6/r7(0x556c268b7dc0)[S] from unsigned short
+	or unsigned int r6/r7(0x556c268b7dc0)[S],#UI64->r6/r7(0x556c268b7ee0)[S]
+	convert unsigned char r6/r7(0x556c268b7ee0)[S]->([near-pointer]r16/r17(p)[S]) from unsigned int
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	allocreg r6/r7
+	convert unsigned int 0+4(FP)(vramOff)->r6/r7(0x556c268b8790)[S] from unsigned short
+	and unsigned int r6/r7(0x556c268b8790)[S],#UI255->r6/r7(0x556c268b8870)[S]
+	convert unsigned char r6/r7(0x556c268b8870)[S]->([near-pointer]r16/r17(p)[S]) from unsigned int
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	move unsigned char #UC32->([near-pointer]r16/r17(p)[S]) size=1
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	allocreg r6/r7
+	lsr unsigned short 0+15(FP)(yOff),#I3->r6/r7(0x556c268b9b20)[S] shift-type int
+	convert unsigned int r6/r7(0x556c268b9b20)[S]->r6/r7(0x556c268b9d50)[S] from unsigned short
+	add unsigned int r6/r7(0x556c268b9d50)[S],#UI30->r6/r7(0x556c268b9e70)[S]
+	allocreg a
+	convert unsigned char r6/r7(0x556c268b9e70)[S]->a(0x556c268ba1c0)[S] from unsigned int
+	freereg r6/r7
+	allocreg r0/r1
+	move near-pointer #0+L62(mapLine)->r0/r1(0x556c268ba700):r0/r1[S] size=2
+	allocreg r2
+	move unsigned char a(0x556c268ba1c0)[S]->r2(0x556c268ba930):r2[S] size=1
+	freereg a
+	move near-pointer r16/r17(p)->0+0(FP)(p) size=2
+	move unsigned char r23(fOff)->0+13(FP)(fOff) size=1
+	move char r22(step)->0+12(FP)(step) size=1
+	move unsigned char r21(sOff)->0+14(FP)(sOff) size=1
+	call function 0+_GetMapData(GetMapData) size=0 => GetMapData
+	move near-pointer 0+0(FP)(p)->r16/r17(p) size=2
+	move unsigned char 0+13(FP)(fOff)->r23(fOff) size=1
+	move char 0+12(FP)(step)->r22(step) size=1
+	move unsigned char 0+14(FP)(sOff)->r21(sOff) size=1
+	nop r0/r1(0x556c268ba700):r0/r1[S]
+	freereg r0/r1
+	nop r2(0x556c268ba930):r2[S]
+	freereg r2
+	move unsigned char #UC0->r10(i) size=1
+	move unsigned char r10(i)->0+19(FP)(i) size=1
+	freereg r10
+	allocreg r2
+	allocreg r1
+	allocreg r0
+	move unsigned char 0+19(FP)(i)->x(i) size=1
+L200 (while-loop)
+	allocreg r6/r7
+	add-int-to-pointer unsigned char #0+L62(mapLine),x(i)->r6/r7(0x556c268bbde0)[S] ptype=near-pointer (eff_ic)
+	move unsigned char ([near-pointer]r6/r7(0x556c268bbde0)[S])->([near-pointer]r16/r17(p)[S]) size=1
+	freereg r6/r7
+	add-int-to-pointer int r16/r17(p),#I1->r16/r17(p) ptype=near-pointer (eff_ic)
+	add unsigned char x(i),#UC1->x(i)
+	compare unsigned char x(i),#UC32
+	blt L200
+L214
+	freereg r2
+	allocreg r2/r3
+	allocreg r10
+	test unsigned short 0+4(FP)(vramOff)
+	beq L144
+	freereg x
+	move unsigned char #UC255->([near-pointer]r16/r17(p)[S]) size=1
+	allocreg a/x
+	move near-pointer #0+L61(updateList)->a/x(0x556c268bd1a0):a/x[S] size=2
+	call function 0+_lnList(lnList) size=0 => lnList
+	nop a/x(0x556c268bd1a0):a/x[S]
+	freereg a/x
+	freereg r0
+	freereg r1
+	freereg r2/r3
+	freereg r4/r5
+L144
+	allocreg x
+	allocreg r6/r7
+	lsr short 0+8(FP)(ey),#I4->r6/r7(0x556c268bdcc0)[S] shift-type int
+	allocreg r4/r5
+	convert short 0+15(FP)(yOff)->r4/r5(0x556c268bdef0)[S] from unsigned short
+	sub short r6/r7(0x556c268bdcc0)[S],r4/r5(0x556c268bdef0)[S]->r4/r5(0x556c268be130)[S]
+	freereg r6/r7
+	allocreg r0/r1
+	move near-pointer #0+_sprTab(sprTab)->r0/r1(0x556c268be870):r0/r1[S] size=2
+	allocreg r2/r3
+	move short #S96->r2/r3(0x556c268beaa0):r2/r3[S] size=2
+	move short r4/r5(0x556c268be130)[S]->r4/r5(0x556c268becd0):r4/r5[S] size=2
+	call function 0+_lnAddSpr(lnAddSpr) size=0 => lnAddSpr
+	nop r0/r1(0x556c268be870):r0/r1[S]
+	freereg r0/r1
+	nop r2/r3(0x556c268beaa0):r2/r3[S]
+	freereg r2/r3
+	nop r4/r5(0x556c268becd0):r4/r5[S]
+	freereg r4/r5
+	add short 0+2(FP)(tics),#S1->0+2(FP)(tics)
+	allocreg r2/r3
+	convert unsigned short r21(sOff)->r2/r3(0x556c268bf710)[S] from unsigned char
+	allocreg r0/r1
+	move unsigned short #US0->r0/r1(0x556c268bfb30):r0/r1[S] size=2
+	move unsigned short r2/r3(0x556c268bf710)[S]->r2/r3(0x556c268bfd60):r2/r3[S] size=2
+	call function 0+_lnScroll(lnScroll) size=0 => lnScroll
+	nop r0/r1(0x556c268bfb30):r0/r1[S]
+	freereg r0/r1
+	nop r2/r3(0x556c268bfd60):r2/r3[S]
+	freereg r2/r3
+	allocreg a
+	move unsigned char #UC0->a(0x556c268c05b0):a[S] size=1
+	call function 0+_lnSync(lnSync) size=0 => lnSync
+	nop a(0x556c268c05b0):a[S]
+	freereg a
+	bra L208
+	allocreg r4/r5
+	allocreg r2/r3
+	allocreg r1
+	allocreg r0
+	freereg x
+	freereg r0
+	freereg r1
+	freereg r8
+	freereg r9
+	freereg r10
+	freereg r11
+	freereg r12
+	freereg r20
+	freereg r21
+	freereg r22
+	freereg r23
+	freereg r2/r3
+	freereg r4/r5
+	freereg r14/r15
+	freereg r16/r17
+	freereg r18/r19

@@ -1,0 +1,170 @@
+vbcc 6502 Release 2 Beta 2
+
+This is a port of the vbcc compiler to the 6502 architecture. It
+contains a compiler, assembler, linker and a somewhat rushed port of
+a C Library for the C64, NES, Atari 8bit, BBC Micro/Master, MEGA65
+and Commander X16.
+
+A few of the good things:
+
+- compiler is under active development
+- supports C99 (variable-length arrays, designated initializers etc.)
+- generates optimized code (see dhrystones in sample directory)
+- supports banked memory and far-pointers
+- (limited) floating point support based on Steve Wozniaks code
+- (pretty good) 32/64bit IEEE floating point support based on SANE
+- support for 65C02 extensions
+- support for writing interrupt handlers
+- attributes for putting variables into zero page
+- supports stack-frames > 256 bytes
+
+On the bad side, the C library is currently only partially optimized
+for the 6502 and may be too big for many applications.
+
+So far, speed of the generated code was the main concern. Code size
+still needs some optimizations. An experimental code compressor is
+included that can find common code sequences and outline them to
+subroutines. When comparing code size it is important to leave out
+the C library which can add huge overhead.
+
+This archive contains binaries for Windows and Linux (built on Ubuntu
+20.04 for x64). A sample directory with a few small test cases and some
+nice NES demos is also included.
+
+To use the compiler on Windows:
+
+  set VBCC=<path-to-vbcc-dir>
+  set PATH=%VBCC%\bin;%PATH%
+
+On Linux, use something like:
+
+  export VBCC=<path-to-vbcc-dir>
+  export PATH=$VBCC/bin:$PATH
+
+Compiling works pretty much like most compilers, e.g.:
+
+  vc file.c -o binary
+
+When using floating point, link with the math library:
+
+  vc file.c -lm -o binary
+
+For IEEE floating point, link with -lmieee and use -ieee:
+
+  vc file.c -ieee -lmieee -o binary
+
+Choose a different target confguration with +<cfg>:
+
+  vc +c64 file.c -o file.c64
+  vc +nes file.c -o file.nes
+  vc +atari file.c -o file.com
+  vc +bbc file.c -o file
+  vc +m65 file.c -o file
+  vc +x16 file.c -o file
+
+
+Further information on vbcc can be found on
+
+  http://www.compilers.de/vbcc
+
+and in the vbcc.pdf included here. Apart from the general sections on
+the compiler, be sure to have a look at the ones on the 6502 backend
+and the 6502/C64, 6502/NES, 6502/Atari, 6502/BBC, 6502/MEGA65 or
+6502/X16 part of the C library.
+
+
+LEGAL
+
+Please consult the vbcc.pdf regarding terms of usage.
+
+
+For questions, results etc., reach me at: vb@compilers.de
+
+
+Volker Barthelmann
+
+Changes since r2b1:
+- several bug fixes
+- few code generation improvements
+- new command line option -nox (for debugging)
+
+Changes since r1:
+- new target: MEGA65 (native mode, some banking support)
+- new target: Commander X16 (thanks András Péteri)
+- new options -prefer-statics/-force-statics
+  (allocate local variables in static memory rather
+  than on the stack)
+- new option -range-opt
+  (first implementation of some range-based optimizations 
+  changing induction variables to smaller types)
+- added support for o65 object file format
+- added support for Oric target format
+- better use of x register
+- improved cross-module function-inlining
+- IEEE math library works with 65c02
+- several code generation improvements
+- fixed several bugs
+- slightly reworked examples
+
+Changes since beta patchlevel e:
+- new target: bbc micro/master
+- support for 65C02
+- C99 mode is now the default, -c89 selects C89
+- several bug fixes
+- small code improvements
+
+Changes for patchlevel e:
+- fixed some register clobbering
+- updated atari target files according to forum discussion
+- fixed C64 reentrant startup code
+- fixed NES initialization code
+
+Changes for patchlevel d:
+- fixed bugs regarding inline memcpy
+- minor improvement regarding volatile
+- fixed config files regarding -vv and -nostdlib
+
+Changes for patchlevel c:
+- fixed bug with const memcpy and absolute addresses
+- fixed a case of incorrect cmp #0 elimination
+- disabled peephole optimization on inline assembly
+- adapted const memcpy parameters
+- fixed volatile bug
+
+Changes for patchlevel b:
+- fixed bug with missing volatile barrier
+- fixed bug with optimized memcpy with constant pointers
+- improved __interrupt handling
+
+Changes for patchlevel a:
+- fixed code path with missing clc before adc
+
+Major changes since Alpha 2:
+
+- first version of an Atari 8bit target (Atari)
+- configuration for running banked code with REU (C64)
+- configuration for TxROM mapper (NES)
+- some speed and size optimizations of the C library
+  (thanks to Frank Wille) => up to 234 dhrystones/s on C64
+- chars are unsigned by default for slightly better code
+- return values of banked function calls work now
+- setjmp/longjmp added
+- new option -depobj to fix problems with -deps
+- zpage now supports multiple arguments (vasm)
+- some support for mixing source and assembly with -g
+- a few bug fixes
+- updated/improved documentation
+
+Major changes since Alpha 1:
+
+- fixed some bugs
+- added NES target including lazyNES library (NES)
+  (thanks to Matthias "lazycow" Bock)
+- added support for banked memory and far pointers
+- added 32/64bit IEEE compliant floating point based on SANE
+  (thanks to Andy Werner)
+- added argv handling (C64)  
+  (thanks to Stefan Haubenthal)
+- improved code generation for larger types
+- added config for re-runnable programs (C64)
+- more examples/demos

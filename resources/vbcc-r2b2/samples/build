@@ -1,0 +1,70 @@
+vc +c64 -O3 mandelbrot.c -o C64/mbrotint
+vc +c64 -O3 fmandelbrot.c -lm -o C64/mbrotwoz
+vc +c64 -O3 fmandelbrot.c -ieee -lmieee -o C64/mbrotieee
+vc +c64 -O3 -DC64 mandelbrot.c -o C64/mbrotgint
+vc +c64 -O3 -DC64 fmandelbrot.c -lm -o C64/mbrotgwoz
+vc +c64 -O3 -DC64 fmandelbrot.c -ieee -lmieee -o C64/mbrotgieee
+vc +c64 -O -size calc.c -lm -o C64/calcwoz
+vc +c64 -O -size calc.c -ieee -lmieee -o C64/calcieee
+vc +c64 -O3 -speed dhry_1.c dhry_2.c -o C64/dhry
+vc +c64 -O3 -speed -force-statics dhry_1.c dhry_2.c -o C64/dhrystatic
+vc +c64 -O3 reuflat.c -lreuflat -o C64/reuflat
+vc +c64r -O3 argv.c -o C64/argv
+vc +c64reu -O bank1.c -o C64/bank1_reu
+vc +c64reu -O bank2.c -o C64/bank2_reu
+vc +c64reu -O bank3.c -o C64/bank3_reu
+
+c1541 -format "vbcc,id" d64 C64/vbcc.d64 -write C64/argv -write C64/mbrotint -write C64/mbrotwoz -write C64/mbrotieee -write C64/mbrotgint -write C64/mbrotgwoz -write C64/mbrotgieee -write C64/calcwoz -write C64/calcieee -write C64/dhry -write C64/dhrystatic -write C64/reuflat
+
+vc +nrom256v -O3 -DSCREEN_X=32 -DSCREEN_Y=28 mandelbrot.c -o NES/mbrotint.nes
+vc +nrom256v -O3 -DSCREEN_X=32 -DSCREEN_Y=28 fmandelbrot.c -lm -o NES/mbrotwoz.nes
+vc +nrom256v -O -size calc.c -lm -o NES/calcwoz.nes
+vc +unrom512v -O bank1.c -o NES/banku1.nes
+vc +unrom512v -O bank2.c -o NES/banku2.nes
+vc +unrom512v -O bank3.c -o NES/banku3.nes
+vc +tbrom -O bank1.c -o NES/bankt1.nes
+vc +tbrom -O bank2.c -o NES/bankt2.nes
+vc +tbrom -O bank3.c -o NES/bankt3.nes
+vc +nrom256v -O3 -speed -DSMALLMEM dhry_1.c dhry_2.c -o NES/dhry.nes
+vc +nrom256v -O3 -speed -DSMALLMEM -force-statics dhry_1.c dhry_2.c -o NES/dhrystatic.nes
+
+
+vc +atari -O -size calc.c -lm -o ATARI/calcwoz.com
+vc +atari -O -size calc.c -ieee -lmieee -o ATARI/calcieee.com
+vc +atari -O3 -DSCREEN_X=38 -DSCREEN_Y=22 mandelbrot.c -o ATARI/mbrotint.com
+vc +atari -O3 -DSCREEN_X=38 -DSCREEN_Y=22 fmandelbrot.c -lm -o ATARI/mbrotwoz.com
+vc +atari -O3 -DSCREEN_X=38 -DSCREEN_Y=22 fmandelbrot.c -ieee -lmieee -o ATARI/mbrotieee.com
+vc +atari -O3 -speed dhry_1.c dhry_2.c -o ATARI/dhry.com
+vc +atari -O3 -speed -force-statics dhry_1.c dhry_2.c -o ATARI/dhrystatic.com
+
+cd BBC
+vc +bbc -O -size ../calc.c -lm -o calcwoz
+vc +bbc -O3 ../mandelbrot.c -o mbrotint
+vc +bbc -O3 ../fmandelbrot.c -lm -o mbrotwoz
+vc +bbc -O3 ../fmandelbrot.c -ieee -lmieee -o mbrotieee
+vc +bbc -O3 -speed ../dhry_1.c ../dhry_2.c -o dhry
+vc +bbc -O3 -speed -force-statics ../dhry_1.c ../dhry_2.c -o dhrystatic
+
+bbcim -a vbcc.ssd dhry dhrystatic calcwoz mbrotint mbrotwoz mbrotieee
+cd ..
+
+vc +m65r -O argv.c -o MEGA65/argv
+vc +m65 -O -size calc.c -lm -o MEGA65/calcwoz
+vc +m65 -O3 -DDOUBLE mandelbrot.c -o MEGA65/mbrotint
+vc +m65 -O3 -DDOUBLE fmandelbrot.c -lm -o MEGA65/mbrotwoz
+vc +m65 -O3 -DDOUBLE fmandelbrot.c -ieee -lmieee -o MEGA65/mbrotieee
+vc +m65 -O3 -speed -DRUNS=60000 dhry_1.c dhry_2.c -o MEGA65/dhry
+vc +m65 -O3 -speed -DRUNS=60000 -force-statics dhry_1.c dhry_2.c -o MEGA65/dhrystatic
+vc +m65bank -O bankm65.c -o MEGA65/bankm65
+
+c1541 -format "vbcc,id" d81 MEGA65/vbcc.d81 -write MEGA65/argv -write MEGA65/calcwoz -write MEGA65/mbrotint -write MEGA65/mbrotwoz -write MEGA65/mbrotieee -write MEGA65/dhry -write MEGA65/dhrystatic -write MEGA65/bankm65
+
+vc +x16r -O argv.c -o X16/argv
+vc +x16 -O -size calc.c -lm -o X16/calcwoz
+vc +x16 -O -size calc.c -ieee -lmieee -o X16/calcieee
+vc +x16 -O3 -DDOUBLE -DSCRREN_Y=50 mandelbrot.c -o X16/mbrotint
+vc +x16 -O3 -DDOUBLE fmandelbrot.c -lm -o X16/mbrotwoz
+vc +x16 -O3 -DDOUBLE fmandelbrot.c -ieee -lmieee -o X16/mbrotieee
+vc +x16 -O3 -speed -DRUNS=10000 dhry_1.c dhry_2.c -o X16/dhry
+vc +x16 -O3 -speed -DRUNS=10000 -force-statics dhry_1.c dhry_2.c -o X16/dhrystatic
+
