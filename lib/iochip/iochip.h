@@ -1,32 +1,32 @@
 #define PORTB ((volatile unsigned char*)0x6000)
 #define PORTA ((volatile unsigned char*)0x6001)
-#define DDRB ((volatile unsigned char*)0x6002)
-#define DDRA ((volatile unsigned char*)0x6003)
-#define E 128
-#define RW 64
-#define RS 32
+#define DDRB  ((volatile unsigned char*)0x6002)
+#define DDRA  ((volatile unsigned char*)0x6003)
+#define E   128 // 10000000
+#define RW   64 // 00110100
+#define RS   32 // 00011010
 
-void set_PORTA(char val)
+void set_PORTA(unsigned char val)
 {
     *PORTA = val;
 }
 
-void set_PORTB(char val)
+void set_PORTB(unsigned char val)
 {
     *PORTB = val;
 }
 
-void set_DDRA(char val)
+void set_DDRA(unsigned char val)
 {
     *DDRA = val;
 }
 
-void set_DDRB(char val)
+void set_DDRB(unsigned char val)
 {
     *DDRB = val;
 }
 
-char get_PORTB()
+unsigned char get_PORTB()
 {
     return *PORTB;
 }

@@ -1,6 +1,6 @@
 #include "lcdio/lcdio.h"
 
-int main(int argc, char **argv)
-{
+int main() {
+    lcd_reset();
     print_message_to_lcd("Hello, world!");
 }

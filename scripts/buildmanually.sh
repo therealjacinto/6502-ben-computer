@@ -53,12 +53,8 @@ fi
 mkdir -p ${REPOPATH}/build
 
 if [[ ${startup} ]]; then
-    printf "INFO: Generating startup code assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.c -o=${REPOPATH}/build/startup.s -c99 -quiet -avoid-bank-switch -O=307 ${DEBUG_FLAG}
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/targets/libsrc/6502-ben/startup.h -o=${REPOPATH}/build/startup-reg.s -c99 -quiet -avoid-bank-switch -O=1 ${DEBUG_FLAG}
     printf "INFO: Compiling startup object files...\n"
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/startup-reg.s -o ${REPOPATH}/lib/startup-reg.o -Fvobj -quiet -nowarn=62
+    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/targets/libsrc/6502-ben/startup.s -o ${REPOPATH}/lib/startup.o -Fvobj -quiet -nowarn=62
 fi
 
 if [[ ${assembler} ]]; then

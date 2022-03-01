@@ -1,10 +1,10 @@
--cc=$VBCC/bin/vbcc6502 -quiet -avoid-bank-switch -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
--ccv=$VBCC/bin/vbcc6502 -avoid-bank-switch -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
+-cc=$VBCC/bin/vbcc6502 -quiet -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
+-ccv=$VBCC/bin/vbcc6502 -c99 -I$VBCC/lib %s -o= %s %s -O=%ld
 -as=$VBCC/bin/vasm6502_oldstyle -quiet -nowarn=62 -opt-branch -Fvobj %s -o %s
 -asv=$VBCC/bin/vasm6502_oldstyle -nowarn=62 -opt-branch -Fvobj %s -o %s
 -rm=rm %s
 -rmv=rm %s
 -cpr=$VBCC/bin/vcpr6502 -quiet %s %s
 -cprv=$VBCC/bin/vcpr6502 %s %s
--ld=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
--ldv=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o -set-deluscore $VBCC/lib/startup-reg.o -clr-deluscore %s %s -o %s
+-ld=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o %s %s -o %s
+-ldv=$VBCC/bin/vlink -b rawbin1 -Cvbcc -T$VBCC/targets/6502-ben/vlink.cmd $VBCC/lib/startup.o %s %s -o %s

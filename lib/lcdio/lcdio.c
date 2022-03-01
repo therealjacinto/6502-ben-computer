@@ -1,16 +1,15 @@
 #include "iochip/iochip.h"
 
-void lcdbusy()
-{
-    char temp = 1;
+void lcdbusy() {
+    unsigned char temp = 1;
     do
     {
-        set_PORTA(RW); // NO
-        set_PORTA(RW | E); // NO
+        set_PORTA(RW);
+        set_PORTA(RW | E);
         temp = get_PORTB() & 128;
     } while (temp != 0);
-    set_PORTA(RW); // NO
-    set_DDRB(255); /* Port B is output */ // NO
+    set_PORTA(RW);
+    set_DDRB(255); /* Port B is output */
 }
 
 void lcd_wait()
@@ -19,21 +18,13 @@ void lcd_wait()
     lcdbusy();
 }
 
-void lcd_instruction(char command)
+void lcd_instruction(unsigned char command)
 {   
     lcd_wait();
     set_PORTB(command);
     set_PORTA(0); /* Clear RS/RW/E bits */
     set_PORTA(E); /* Set E bit to send instruction */
     set_PORTA(0); /* Clear RS/RW/E bits */
-}
-
-void print_char(char character) {
-    lcd_wait();
-    set_PORTB(character);
-    set_PORTA(RS); /* Set RS; Clear RW/E bits */
-    set_PORTA(RS | E); /* Set E bit to send instruction */
-    set_PORTA(RS); /* Clear E bit */
 }
 
 void lcd_reset()
@@ -44,6 +35,14 @@ void lcd_reset()
     lcd_instruction(14); /* Display on; cursor on; blink off */
     lcd_instruction(6); /* Increment and shift cursor; don't shift display */
     lcd_instruction(1); /* Clear display */
+}
+
+void print_char(unsigned char character) {
+    lcd_wait();
+    set_PORTB(character);
+    set_PORTA(RS); /* Set RS; Clear RW/E bits */
+    set_PORTA(RS | E); /* Set E bit to send instruction */
+    set_PORTA(RS); /* Clear E bit */
 }
 
 void print_message_to_lcd(char *message) {
