@@ -60,3 +60,50 @@ Finally, you can use `disassemble` to show the assembly code from a given addres
 There is much optimization that can be done as I learn more about how to use `vbcc`. I can utilize more inline functions, avoid saving register states when entering certain functions, etc.
 
 Also, I need to understand more about how to use certain libraries and include header files.
+
+# Updates: WSL
+sudo apt-get install build-essential pkg-config git libusb-1.0-0-dev
+
+in order to see the device on wsl, I had to install https://github.com/dorssel/usbipd-win
+powershell admin:
+winget install --interactive --exact dorssel.usbipd-win
+
+install stuff on ubuntu: https://docs.microsoft.com/en-us/windows/wsl/connect-usb
+sudo apt install linux-tools-5.4.0-77-generic hwdata
+sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/5.4.0-77-generic/usbip 20
+
+I also needed to update my kernel distro:
+wsl --update
+
+check which device to pass through
+usbipd wsl list
+pass it through
+usbipd wsl attach --busid ID-ID
+unattach
+usbipd wsl detach --busid ID-ID
+
+When setting udev usb rules, and you run `udevadm control --reload` and you get an error "Failed to send reload request: No such file or directory", then just run `sudo service udev restart` and then try again.
+
+You can view bin files using the following command:
+```
+hexdump -C rom.bin
+```
+
+# Video ROMS
+## Video 2: How do CPUs read machine code? — 6502 part 2
+To build this ROM, navigate to the [python](python/) directory and run the [makerom.py](python/makerom.py) script. It is recommended you also have the arduino monitor attached so you can view the address/data bus. Also, this should be used with the clock module, not the crystal oscillator.
+
+## Video 3: Assembly language vs. machine code — 6502 part 3
+To build this ROM, navigate to the [asm-src](resources/asm-src/) directory and build the [blink.s](resources/asm-src/blink.s) assembly file. This doesn't use the lcd screen and again is recommended to have the clock module and the arduino monitor attached.
+
+## Video 4: Connecting an LCD to our computer — 6502 part 4
+To build this ROM, navigate to the [asm-src](resources/asm-src/) directory and build the [hello-world-lcd.s](resources/asm-src/hello-world-lcd.s) assembly file. This program will not work with the crystal oscillator since it is too fast, so it requires the clock module since it is slower. Also, this program does not wipe the display on reset, so "Hello, world!" is printed wherever the cursor currently is on the LCD screen.
+
+## Video 5: What is a stack and how does it work? — 6502 part 5
+To build this ROM, navigate to the [asm-src](resources/asm-src/) directory and build the [hello-world-subroutines.s](resources/asm-src/hello-world-subroutines.s) assembly file. This program will not work with the crystal oscillator since it is too fast, so it requires the clock module since it is slower. It will also not work without the RAM chip because of the subroutines implemented (as shown in the video), so this code and all future code will require the RAM chip. Lastly, this program does not wipe the display on reset, so "Hello, world!" is printed wherever the cursor currently is on the LCD screen.
+
+## Video 7: Subroutine calls, now with RAM — 6502 part 7
+To build this ROM, navigate to the [asm-src](resources/asm-src/) directory and build the [hello-world-ram.s](resources/asm-src/hello-world-ram.s) assembly file. This program will not work with the crystal oscillator since it is too fast, so it requires the clock module since it is slower.
+
+## Video 9: How assembly language loops work
+To build this ROM, navigate to the [asm-src](resources/asm-src/) directory and build the [hello-world-loops.s](resources/asm-src/hello-world-loops.s) assembly file. This program will work with either the crystal oscillator or the clock module (from here on out use the oscillator). 

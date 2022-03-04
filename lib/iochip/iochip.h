@@ -1,32 +1,21 @@
-#define PORTB ((volatile unsigned char*)0x6000)
-#define PORTA ((volatile unsigned char*)0x6001)
-#define DDRB  ((volatile unsigned char*)0x6002)
-#define DDRA  ((volatile unsigned char*)0x6003)
-#define E   128 // 10000000
-#define RW   64 // 00110100
-#define RS   32 // 00011010
+/*
+ * Desctiption: Functions that control the W65C22 Versatile Interface Adapter
+ * 
+ * Author: therealjacinto
+ * Date:   2022-03-03
+ */
 
-void set_PORTA(unsigned char val)
-{
-    *PORTA = val;
-}
+/* Set the Data Direction Register for Port A */
+void set_data_direction_port_a(unsigned char output_pin_mask);
 
-void set_PORTB(unsigned char val)
-{
-    *PORTB = val;
-}
+/* Set the Data Direction Register for Port B */
+void set_data_direction_port_b(unsigned char output_pin_mask);
 
-void set_DDRA(unsigned char val)
-{
-    *DDRA = val;
-}
+/* Set data to Port A */
+void set_data_port_a(unsigned char value);
 
-void set_DDRB(unsigned char val)
-{
-    *DDRB = val;
-}
+/* Set data to Port B */
+void set_data_port_b(unsigned char value);
 
-unsigned char get_PORTB()
-{
-    return *PORTB;
-}
+/* Get data from Port B */
+unsigned char get_data_port_b();

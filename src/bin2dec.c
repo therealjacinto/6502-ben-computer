@@ -76,7 +76,7 @@ void divide(unsigned int value)
     }
 }
 
-int main(int argc, char **argv)
+int main()
 {
     // Initialize message so we know where the end is
     *message = 0;
