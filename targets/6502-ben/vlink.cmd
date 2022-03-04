@@ -7,7 +7,7 @@ MEMORY
 
     /* Empty space: 0x002b - 0x00ff */
 
-    /* 6502 hard-coded stack */
+    /* 6502 hardware stack */
     stack : org = 0x0100, len = 0x00ff
 
     /* RAM chip can be used up to 0x3fff */
