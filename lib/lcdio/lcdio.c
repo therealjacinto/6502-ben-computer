@@ -20,7 +20,6 @@ void wait_for_lcd()
 {
     unsigned char busy = 1;
     set_data_direction_port_b(0);
-    set_data_direction_port_a(224);
     do
     {
         set_data_port_a(RW);             /* Set read bit */
@@ -47,7 +46,6 @@ void send_lcd_instruction(unsigned char instruction)
     set_data_port_b(instruction);
 
     /* Enable instruction */
-    set_data_direction_port_a(224);
     set_data_port_a(0);  /* Clear RS/RW/E bits */
     set_data_port_a(E);  /* Set E bit to send instruction */
     set_data_port_a(0);  /* Clear RS/RW/E bits */
@@ -60,6 +58,7 @@ void send_lcd_instruction(unsigned char instruction)
  */
 void reset_lcd()
 {
+    set_data_direction_port_a(224);
     send_lcd_instruction(56); /* Set 8-bit mode; 2-line display; 5x8 font */
     send_lcd_instruction(14); /* Display on; cursor on; blink off */
     send_lcd_instruction(6);  /* Increment and shift cursor; don't shift */
@@ -83,7 +82,6 @@ void print_char_to_lcd(unsigned char character) {
     set_data_port_b(character);
 
     /* Enable character */
-    set_data_direction_port_a(224);
     set_data_port_a(RS);      /* Set RS; Clear RW/E bits */
     set_data_port_a(RS | E);  /* Set E bit to send instruction */
     set_data_port_a(RS);      /* Clear E bit */
@@ -97,6 +95,7 @@ void print_char_to_lcd(unsigned char character) {
  *  character: char to print
  */
 void print_message_to_lcd(char *message) {
+    set_data_direction_port_a(224);
     int i = 0;
     while (message[i] != 0)
     {
