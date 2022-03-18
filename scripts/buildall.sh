@@ -7,5 +7,5 @@ mkdir -p ${REPOPATH}/build
 
 export VBCC=${REPOPATH}
 ${SCRIPTSPATH}/buildmanually.sh --startup
-${REPOPATH}/bin/vc +ben ${REPOPATH}/src/helloworld.c ${REPOPATH}/lib/lcdio/lcdio.c ${REPOPATH}/lib/iochip/iochip.c -o ${REPOPATH}/build/helloworld
-${REPOPATH}/bin/vc +ben ${REPOPATH}/src/bin2dec.c ${REPOPATH}/lib/lcdio/lcdio.c ${REPOPATH}/lib/iochip/iochip.c -o ${REPOPATH}/build/bin2dec
+${REPOPATH}/bin/vc +ben ${REPOPATH}/src/helloworld.c ${REPOPATH}/lib/lcdio/lcdio.c -o ${REPOPATH}/build/helloworld
+${REPOPATH}/bin/vc +ben ${REPOPATH}/src/bin2dec.c ${REPOPATH}/lib/lcdio/lcdio.c -o ${REPOPATH}/build/bin2dec
