@@ -43,7 +43,7 @@ winning_string=${starting_string}
 while [ ${last} -lt ${base} ] || [ "$(bin_to_dec ${winning_string})" -lt "$(bin_to_dec ${starting_string})" ]; do
     last=${base}
     starting_string=${winning_string}
-    base=$(wc -l ${REPOPATH}/build/${c_file_base}.s | awk -F " " '{ print $1 }')
+    base=$(cat ${REPOPATH}/build/${c_file_base}.s | sed '/^\s*\;/d;/^\s*$/d;/^\s*\tsection/d;/^\s*\tglobal/d;/^\s*\tbyte/d;/^\s*\tzpage/d' | wc -l | awk -F " " '{ print $1 }')
     for (( i=0; i<${#starting_string}; i++ )); do
         test_string=$(unset_bit ${starting_string} ${i})
         suppress=$(${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${c_file} -o=${REPOPATH}/build/${c_file_base}.s -c99 -quiet -avoid-bank-switch -O=$(bin_to_dec ${test_string}))

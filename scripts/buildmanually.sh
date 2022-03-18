@@ -59,9 +59,9 @@ fi
 
 if [[ ${assembler} ]]; then
     printf "INFO: Generating assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=447 ${DEBUG_FLAG}
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=259 ${DEBUG_FLAG}
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=283 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=1471 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=7615 ${DEBUG_FLAG}
+    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=3517 ${DEBUG_FLAG}
 fi
 
 if [[ ${objects} ]]; then
