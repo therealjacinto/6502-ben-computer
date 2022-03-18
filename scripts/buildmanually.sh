@@ -59,7 +59,6 @@ fi
 
 if [[ ${assembler} ]]; then
     printf "INFO: Generating assembler output...\n"
-    ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/iochip/iochip.c -o=${REPOPATH}/build/iochip.s -c99 -quiet -avoid-bank-switch -O=259 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/lib/lcdio/lcdio.c -o=${REPOPATH}/build/lcdio.s -c99 -quiet -avoid-bank-switch -O=447 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/helloworld.c -o=${REPOPATH}/build/helloworld.s -c99 -quiet -avoid-bank-switch -O=259 ${DEBUG_FLAG}
     ${REPOPATH}/bin/vbcc6502 -I${REPOPATH}/lib ${REPOPATH}/src/bin2dec.c -o=${REPOPATH}/build/bin2dec.s -c99 -quiet -avoid-bank-switch -O=283 ${DEBUG_FLAG}
@@ -67,7 +66,6 @@ fi
 
 if [[ ${objects} ]]; then
     printf "INFO: Compiling object files...\n"
-    ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/iochip.s -o ${REPOPATH}/build/iochip.o -Fvobj -quiet -nowarn=62 -opt-branch
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/lcdio.s -o ${REPOPATH}/build/lcdio.o -Fvobj -quiet -nowarn=62 -opt-branch
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/helloworld.s -o ${REPOPATH}/build/helloworld.o -Fvobj -quiet -nowarn=62 -opt-branch
     ${REPOPATH}/bin/vasm6502_oldstyle ${REPOPATH}/build/bin2dec.s -o ${REPOPATH}/build/bin2dec.o -Fvobj -quiet -nowarn=62 -opt-branch
@@ -75,8 +73,8 @@ fi
 
 if [[ ${linking} ]]; then
     printf "INFO: Linking object files into raw binary...\n"
-    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o ${REPOPATH}/build/iochip.o -o ${REPOPATH}/build/helloworld
-    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o ${REPOPATH}/build/iochip.o -o ${REPOPATH}/build/bin2dec
+    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o ${REPOPATH}/build/helloworld.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/helloworld
+    ${REPOPATH}/bin/vlink -b rawbin1 -Cvbcc -T${REPOPATH}/targets/6502-ben/vlink.cmd ${REPOPATH}/lib/startup.o ${REPOPATH}/build/bin2dec.o ${REPOPATH}/build/lcdio.o -o ${REPOPATH}/build/bin2dec
 fi
 
 if [[ ! ${saveoutput} ]]; then

@@ -124,6 +124,8 @@ def formatOpArg(opTuple):
         return utilities.convertBinToHex(opTuple[1][2:])
     elif opTuple[1].startswith("#$"):
         return opTuple[1][2:]
+    elif opTuple[1].startswith("$"):
+        return opTuple[1][1:]
     return opTuple[1]
 
 def formatSectionName(line):

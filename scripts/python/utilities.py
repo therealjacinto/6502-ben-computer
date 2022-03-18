@@ -9,7 +9,7 @@ startOfROMDec = 32768
 branches = ["bbr", "bbs", "bcc", "bcs", "beq", "bmi", "bne", "bpl", "bra", "bvc", "bvs", "jmp"]
 jumps = ["jmp", "jsr"]
 
-def lineMatch(asmOpTuple, disFileTuple, locationDict, filename, unknownList=None, filepointer=None, globalList=None, declarationDict=None, methodName=None, methodDict=None):
+def lineMatch(asmOpTuple, disFileTuple, locationDict, filename, unknownList=None, filepointer=None, globalList=[], declarationDict=None, methodName=None, methodDict=None):
     asmOpCode = asmFile.formatOpCode(asmOpTuple)
     asmOpArg = asmFile.formatOpArg(asmOpTuple)
     disOpCode = disFile.formatOpCode(disFileTuple)
