@@ -8,6 +8,5 @@
 #include "lcdio/lcdio.h"
 
 int main() {
-    reset_lcd();
     print_message_to_lcd("Hello, world!");
 }

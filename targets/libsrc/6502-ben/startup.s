@@ -77,6 +77,9 @@ start:
     lda #>__SE
     sta sp+1
 
+    ; reset lcd
+    jsr _reset_lcd
+
     jsr _main
 
 ___exit:
